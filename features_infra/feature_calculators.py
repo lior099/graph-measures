@@ -50,6 +50,7 @@ class FeatureCalculator:
         self._features = {}
         self._logger = EmptyLogger() if logger is None else logger
         self._gnx = gnx
+        self._sample_node = list(self._gnx.nodes)[0]
         self._print_name = self.print_name()
         self._default_val = 0
 
@@ -100,6 +101,10 @@ class FeatureCalculator:
 
     def _params_order(self, input_order: list = None):
         raise NotImplementedError()
+
+    def __len__(self):
+        sample_output = self._get_feature(self._sample_node).tolist()
+        return len(sample_output) if type(sample_output) == list else 1
 
     def to_matrix(self, params_order: list = None, mtype=np.matrix, should_zscore: bool = True):
         mx = np.matrix([self._get_feature(element) for element in self._params_order(params_order)]).astype(np.float32)
