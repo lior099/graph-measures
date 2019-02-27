@@ -19,8 +19,10 @@ class BfsMomentsCalculator(NodeFeatureCalculator):
     def _calculate(self, include: set):
         self._features = bfs_moments(self._gnx)
 
-    def _get_feature(self,element):
-        return list(self._features[element])
+    def _get_feature(self, element):
+        return list(self._features[element])[0]
+
+
 feature_entry = {
     "bfs_moments": FeatureMeta(BfsMomentsCalculator, {"bfs"}),
 }
