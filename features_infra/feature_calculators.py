@@ -104,6 +104,10 @@ class FeatureCalculator:
 
     def __len__(self):
         sample_output = self._get_feature(self._sample_node)
+        try:
+            sample_output = sample_output.tolist()
+        except:
+            pass
         return len(sample_output) if type(sample_output) == list or type(sample_output) == tuple else 1
 
     def to_matrix(self, params_order: list = None, mtype=np.matrix, should_zscore: bool = True):
