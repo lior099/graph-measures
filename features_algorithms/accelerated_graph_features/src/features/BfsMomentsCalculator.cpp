@@ -42,9 +42,9 @@ vector<floatTuple> BfsMomentsCalculator::Calculate() {
 
 //		for (int k = 0; k < dists.size(); k++)
 //			std::cout << dists[k] << " " << weights[k] << std::endl;
+//        std::cout << dists.size() << " " << weights.size() << std::endl;
 
-
-		std::cout<<MathUtils::calculateMeanWithoutZeroes(weights)<<std::endl;
+//		std::cout<<MathUtils::calculateMeanWithoutZeroes(weights)<<std::endl;
 		features[i] = std::make_tuple(
 				MathUtils::calculateWeightedAverage(dists,weights),
 				MathUtils::calculateWeightedStd(dists,weights));

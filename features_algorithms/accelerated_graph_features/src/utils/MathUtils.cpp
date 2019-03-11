@@ -71,7 +71,8 @@ float MathUtils::calculateWeightedStd(const std::vector<float>& data,
 		throw std::length_error("Data and weights must have the same size");
 
 	float avg = calculateWeightedAverage(data,weights);
-	std::vector<float> modified_data(lenData);
+	std::vector<float> modified_data;
+	modified_data.reserve(lenData);
 	for(auto& p:data)
 		modified_data.push_back((p-avg)*(p-avg));
 	float variance = calculateWeightedAverage(modified_data,weights);
