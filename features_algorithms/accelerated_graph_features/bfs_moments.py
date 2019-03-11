@@ -1,6 +1,6 @@
 import os
 import sys
-
+import numpy as np
 sys.path.append(os.path.abspath('.'))
 sys.path.append(os.path.abspath('..'))
 sys.path.append(os.path.abspath('../..'))
@@ -20,7 +20,7 @@ class BfsMomentsCalculator(NodeFeatureCalculator):
         self._features = bfs_moments(self._gnx)
 
     def _get_feature(self, element):
-        return list(self._features[element])[0]
+        return np.array(self._features[element])
 
 
 feature_entry = {
