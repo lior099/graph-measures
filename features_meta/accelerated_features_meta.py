@@ -35,12 +35,14 @@ class FeaturesMeta:
             "k_core": FeatureMeta(KCoreCalculator, {"kc"}),
             "load_centrality": FeatureMeta(LoadCentralityCalculator, {"load_c"}),
             "louvain": FeatureMeta(LouvainCalculator, {"lov"}),
-            "motif3": FeatureMeta(nth_nodes_motif(3), {"m3"}),
+            "motif3": FeatureMeta(nth_nodes_motif(3, gpu), {"m3"}),
             "page_rank": FeatureMeta(PageRankCalculator, {"pr"}),
-            "motif4": FeatureMeta(nth_nodes_motif(4), {"m4"}),
+            "motif4": FeatureMeta(nth_nodes_motif(4, gpu), {"m4"}),
         }
 
         self.MOTIFS = {
-            "motif3": FeatureMeta(nth_nodes_motif(3), {"m3"}),
-            "motif4": FeatureMeta(nth_nodes_motif(4), {"m4"})
+            "motif3": FeatureMeta(nth_nodes_motif(3, gpu), {"m3"}),
+            "motif4": FeatureMeta(nth_nodes_motif(4, gpu), {"m4"})
         }
+
+

@@ -42,11 +42,11 @@ class MotifsNodeCalculator(NodeFeatureCalculator):
         return np.array(self._features[element])
 
 
-def nth_nodes_motif(motif_level):
-    return partial(MotifsNodeCalculator, level=motif_level)
+def nth_nodes_motif(motif_level, gpu):
+    return partial(MotifsNodeCalculator, level=motif_level, gpu=gpu)
 
 
 feature_node_entry = {
-    "motif3_c": FeatureMeta(nth_nodes_motif(3), {"m3_c"}),
-    "motif4_c": FeatureMeta(nth_nodes_motif(4), {"m4_c"}),
+    "motif3_c": FeatureMeta(nth_nodes_motif(3, False), {"m3_c"}),
+    "motif4_c": FeatureMeta(nth_nodes_motif(4, False), {"m4_c"}),
 }

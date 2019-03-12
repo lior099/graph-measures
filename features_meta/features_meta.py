@@ -20,7 +20,7 @@ from features_infra.feature_calculators import FeatureMeta, FeatureCalculator
 
 
 class FeaturesMeta:
-    def __init__(self, gpu=False):
+    def __init__(self):
         self.NODE_LEVEL = {
             "attractor_basin": FeatureMeta(AttractorBasinCalculator, {"ab"}),
             "average_neighbor_degree": FeatureMeta(AverageNeighborDegreeCalculator, {"avg_nd"}),
@@ -41,6 +41,7 @@ class FeaturesMeta:
             "page_rank": FeatureMeta(PageRankCalculator, {"pr"}),
             "motif4": FeatureMeta(nth_nodes_motif(4), {"m4"}),
         }
+        
 
         self.MOTIFS = {
             "motif3": FeatureMeta(nth_nodes_motif(3), {"m3"}),
