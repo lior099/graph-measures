@@ -94,8 +94,9 @@ def motif(graph, **kwargs):
         raise AttributeError('Level must be specified!')
 
     gpu = kwargs.get('gpu', False)
+    device = kwargs.get('cudaDevice', 2)
     if not gpu:
         res = feat.motif(graph, level)
     else:
-        res = feat.motif_gpu(graph, level)
+        res = feat.motif_gpu(graph, level, device)
     return res

@@ -35,7 +35,6 @@ class Worker(Process):
 # object that calculates & holds a list of features of a graph.
 class GraphFeatures(dict):
     def __init__(self, gnx, features, dir_path, logger=None, is_max_connected=False):
-        self.is_build = False
         self._base_dir = dir_path
         self._logger = EmptyLogger() if logger is None else logger
         self._matrix = None
@@ -103,8 +102,6 @@ class GraphFeatures(dict):
         for worker in workers:
             worker.join()
 
-        self.is_build = True
-
     def _load_feature(self, name):
         if self._gnx is None:
             assert os.path.exists(self._feature_path("gnx")), "Graph is not present in the given directory"
@@ -170,14 +167,8 @@ class GraphFeatures(dict):
         sorted_features = [feature for feature in sorted_features if feature.is_relevant() and feature.is_loaded]
 
         if sorted_features:
-            # / added to fix dimensions problem
-            if len(entries_order) == 1:
-                mx = np.hstack([feature.to_matrix(entries_order, mtype=mtype, should_zscore=should_zscore).transpose()
-                                for feature in sorted_features])
-            # added /
-            else:
-                mx = np.hstack([feature.to_matrix(entries_order, mtype=mtype, should_zscore=should_zscore)
-                                for feature in sorted_features])
+            mx = np.hstack([feature.to_matrix(entries_order, mtype=mtype, should_zscore=should_zscore)
+                            for feature in sorted_features])
             if add_ones:
                 mx = np.hstack([mx, np.ones((mx.shape[0], 1))])
             mx.astype(dtype)

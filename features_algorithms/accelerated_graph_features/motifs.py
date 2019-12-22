@@ -18,11 +18,12 @@ BASE_PATH = os.path.dirname(os.path.dirname(CUR_PATH))
 
 
 class MotifsNodeCalculator(NodeFeatureCalculator):
-    def __init__(self, *args, level=3, gpu=False, **kwargs):
+    def __init__(self, *args, level=3, gpu=False, device=2, **kwargs):
         super(MotifsNodeCalculator, self).__init__(*args, **kwargs)
         assert level in [3, 4], "Unsupported motif level %d" % (level,)
         self._level = level
         self._gpu = gpu
+        self._device = device
         self._print_name += "_%d" % (self._level,)
 
     def is_relevant(self):
@@ -36,17 +37,17 @@ class MotifsNodeCalculator(NodeFeatureCalculator):
         return "%s_%d_C_kernel" % (print_name, level)
 
     def _calculate(self, include=None):
-        self._features = motif(self._gnx, level=self._level, gpu=self._gpu)
+        self._features = motif(self._gnx, level=self._level, gpu=self._gpu, cudaDevice=self._device)
 
     def _get_feature(self, element):
         return np.array(self._features[element])
 
 
-def nth_nodes_motif(motif_level, gpu):
-    return partial(MotifsNodeCalculator, level=motif_level, gpu=gpu)
+def nth_nodes_motif(motif_level, gpu, device):
+    return partial(MotifsNodeCalculator, level=motif_level, gpu=gpu, device=device)
 
 
 feature_node_entry = {
-    "motif3_c": FeatureMeta(nth_nodes_motif(3, False), {"m3_c"}),
-    "motif4_c": FeatureMeta(nth_nodes_motif(4, False), {"m4_c"}),
+    "motif3_c": FeatureMeta(nth_nodes_motif(3, gpu=False, device=2), {"m3_c"}),
+    "motif4_c": FeatureMeta(nth_nodes_motif(4, gpu=False, device=2), {"m4_c"}),
 }

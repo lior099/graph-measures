@@ -3,9 +3,16 @@
 Topological feature calculators infrastructure.
 
 ### C code
+**NEW (22.12.19): Setting GPU motif calculation on a specific device**
+
 For installation and running instructions for the C code, refer to the [manual](features_algorithms/accelerated_graph_features/Cache%20Accelerated%20Graph%20Features%20Manual.pdf).
 
 ## Calculating Features
+
+**NEW (22.12.19): _features_for_any_graph.py_ - A file for calculating any requested features on a given graph.**
+
+The calculations can still be done using the method below.
+
 The feature calculators work on a gnx instance.
 At first we'll define a graph (networkx Graph) and a logger
 

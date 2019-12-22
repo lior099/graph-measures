@@ -26,7 +26,7 @@
  */
 class GPUMotifCalculator: public FeatureCalculator<vector<vector<unsigned int>*>*> {
 public:
-	GPUMotifCalculator(int level,bool directed);
+	GPUMotifCalculator(int level,bool directed, int cudaDevice);
 	virtual vector<vector<unsigned int>*>* Calculate();
 	virtual ~GPUMotifCalculator();
 
@@ -50,7 +50,9 @@ private:
 	unsigned int level;
 	//The CacheGraph is always directed, so we need to specify the motif variation
 	bool directed;
-	
+  //Cuda Driver index
+  int cudaDevice;	
+ 
 	// HOST VARIABLES
 
 	//map the group num to the iso motif

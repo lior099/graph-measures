@@ -1,5 +1,5 @@
 from src.accelerated_graph_features.graph_converter import convert_graph_to_db_dict
-import networkx as nx
+
 
 class FeatureWrapper(object):
     """
@@ -12,20 +12,11 @@ class FeatureWrapper(object):
     def __init__(self, func):
         self.f = func
 
-    def _convert_gnx_to_int_based(self, gnx: nx.Graph):
-        nodes = {node: i for i, node in enumerate(gnx.nodes)}
-        new_gnx = nx.DiGraph() if gnx.is_directed() else nx.Graph()
-        for u, v in gnx.edges:
-            new_gnx.add_edge(nodes[u], nodes[v])
-        return new_gnx, [n for n, i in sorted(nodes.items(), key=lambda x: x[1])]
-
     def __call__(self, graph, **kwargs):
         with_weights = kwargs.get('with_weights', False)
         cast_to_directed = kwargs.get('cast_to_directed', False)
 
-        new_graph, node_map = self._convert_gnx_to_int_based(graph)
-        converted_graph = convert_graph_to_db_dict(new_graph, with_weights, cast_to_directed)
-
+        converted_graph = convert_graph_to_db_dict(graph, with_weights, cast_to_directed)
         if 'timer' in kwargs:
             kwargs['timer'].mark()
 
@@ -34,4 +25,4 @@ class FeatureWrapper(object):
         if 'timer' in kwargs:
             kwargs['timer'].stop()
 
-        return {name: val for name, val in zip(node_map, res)}
+        return res
