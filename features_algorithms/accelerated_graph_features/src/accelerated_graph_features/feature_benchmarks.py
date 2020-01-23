@@ -6,11 +6,10 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '.'))
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..'))
-sys.path.append(os.path.join(os.path.dirname(__file__),'graph_measures'))
-
+sys.path.append(os.path.join(os.path.dirname(__file__), 'graph_measures'))
 
 from src.accelerated_graph_features.feature_wrappers import clustering_coefficient, k_core, node_page_rank, bfs_moments, \
-    motif,attraction_basin,flow
+    motif, attraction_basin, flow
 from src.accelerated_graph_features.graph_timer import FeatureTimer
 from src.accelerated_graph_features.original_features_check import original_bfs_moments
 # from Git.graph_measures.cpp_comparison import compare_motifs
@@ -27,27 +26,28 @@ matching_python_functions = {
     # 'Motif4': [lambda G,timer: motif(G, level=4,timer=timer), lambda G: compare_motifs(G, level=4)]
     #	'Motif3_GPU': {'cpp':lambda G,timer: motif(G, level=3,timer=timer),'gpu':lambda G,timer: motif(G, level=3,timer=timer,gpu=True)},
     #	'Motif4_GPU': {'cpp':lambda G,timer: motif(G, level=4,timer=timer),'gpu':lambda G,timer: motif(G, level=4,timer=timer,gpu=True)},
-    'attraction_basin':[attraction_basin,lambda G: AttractorBasinCalculator(G).build()],
-    'flow':[flow,lambda G: FlowCalculator(G).build()]
-    
+    'attraction_basin': [attraction_basin, lambda G: AttractorBasinCalculator(G).build()],
+    'flow': [flow, lambda G: FlowCalculator(G).build()]
+
 }
 
 SEED = 123456
 
+
 def benchmark_gpu_feature_regular_graph(feature_name, type='cpp', d=20):
-    assert type in ['cpp','python','gpu']
-    nodes = [50, 100, 500, 1000, 2000, 5000, 10000,100000]
+    assert type in ['cpp', 'python', 'gpu']
+    nodes = [50, 100, 500, 1000, 2000, 5000, 10000, 100000]
     if type is 'python':
         titles = ['Feature calculation time']
     else:
         titles = ['Conversion Time', 'Feature calculation time']
-	
+
     feature_type = type
     timer = FeatureTimer(feature_name + '_{}_benchmark'.format(feature_type),
                          titles=titles)
 
     for n in nodes:
-        G = nx.random_regular_graph(d, n,seed=SEED,directed=True)
+        G = nx.random_regular_graph(d, n, seed=SEED, directed=True)
         run_id = '{}_nodes_and_{}_edges'.format(n, G.size())
         print(run_id)
         timer.start(run_id)
@@ -60,9 +60,8 @@ def benchmark_gpu_feature_regular_graph(feature_name, type='cpp', d=20):
             timer.stop()
 
 
-
 def benchmark_feature_regular_graph(feature_name, python=False, d=20):
-    nodes = [50, 100, 500, 1000, 2000, 5000, 10000,100000]
+    nodes = [50, 100, 500, 1000, 2000, 5000, 10000, 100000]
     if python:
         feature_type = 'python'
         titles = ['Feature calculation time']
@@ -74,7 +73,7 @@ def benchmark_feature_regular_graph(feature_name, python=False, d=20):
                          titles=titles)
 
     for n in nodes:
-        G = nx.random_regular_graph(d, n,seed=SEED)
+        G = nx.random_regular_graph(d, n, seed=SEED)
         run_id = '{}_nodes_and_{}_edges'.format(n, G.size())
         print(run_id)
         timer.start(run_id)
@@ -113,13 +112,14 @@ def benchmark_feature_erdos_renyi(feature_name, python=False, p=0.8):
         if python:
             timer.stop()
 
-def run_all_feature_with_gpu_tests_regular_graphs():
-	for feature_name in matching_python_functions.keys():
-		print(feature_name)
-		benchmark_gpu_feature_regular_graph(feature_name,type='cpp')
-		benchmark_gpu_feature_regular_graph(feature_name,type='gpu')
 
-			
+def run_all_feature_with_gpu_tests_regular_graphs():
+    for feature_name in matching_python_functions.keys():
+        print(feature_name)
+        benchmark_gpu_feature_regular_graph(feature_name, type='cpp')
+        benchmark_gpu_feature_regular_graph(feature_name, type='gpu')
+
+
 def run_all_feature_tests_regular_graphs():
     for feature_name in matching_python_functions.keys():
         print(feature_name)

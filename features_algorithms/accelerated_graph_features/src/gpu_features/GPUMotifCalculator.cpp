@@ -294,9 +294,9 @@ void Motif3Kernel(bool* visited) {
 	//printf("in motif 3 kernel\n");
 	//AreNeighbors(0,1);
   // Descending order
-//  for (int i = index; i < n; i += stride){
+  for (int i = index; i < n; i += stride){
   // Ascending order - Takes a shorter time than Descending
-	for (int i = n - index - 1; i >= 0 ; i -= stride){
+//	for (int i = n - index - 1; i >= 0 ; i -= stride){
 		//	printf("In motif 3 kernel, i=%i\n",i);
 		Motif3Subtree(globalDevicePointerSortedNodesByDegree[i], visited);
 	}
@@ -307,9 +307,9 @@ void Motif4Kernel(short* visited) {
 	int stride = blockDim.x * gridDim.x;
 	auto n = globalNumOfNodes;
   // Descending order
-//  for (int i = index; i < n; i += stride){
+  for (int i = index; i < n; i += stride){
   // Ascending order - Takes a shorter time than Descending
-	for (int i = n - index - 1; i >= 0 ; i -= stride){
+//	for (int i = n - index - 1; i >= 0 ; i -= stride){
 		Motif4Subtree(globalDevicePointerSortedNodesByDegree[i], visited);
   }
 }
