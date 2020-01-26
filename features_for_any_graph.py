@@ -187,34 +187,14 @@ class OtherFeatures:
         return self._feature_matrix
 
 
-if __name__ == "__main__":
-    head = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "trial_inbar", "10mb_graph1")
-    path = os.path.join(head, "random_edges1.txt")
-    # feats = ["average_neighbor_degree", "betweenness_centrality", "bfs_moments",
-    #          "closeness_centrality", "communicability_betweenness_centrality",
-    #          "eccentricity", "fiedler_vector", "k_core", "load_centrality",
-    #          "louvain", "motif3", "motif4", "degree", "additional_features"]
-    feats = ["k_core", "louvain", "motif3", "motif4", "degree"]
-    ftr_calc = FeatureCalculator(path, head, feats, acc=True, directed=False, gpu=True,
-                                 device=3, verbose=True)
-    ftr_calc.calculate_features()
-    
-    # head = os.path.join(os.path.dirname(__file__), "trial_inbar", "10mb_graph1")
-    # path = os.path.join(head, "random_edges1.txt")
-    # feats = ["average_neighbor_degree", "betweenness_centrality", "bfs_moments",
-    #          "closeness_centrality", "communicability_betweenness_centrality",
-    #          "eccentricity", "fiedler_vector", "k_core", "load_centrality",
-    #          "louvain", "motif3", "motif4", "degree", "additional_features"]
-    # ftr_calc = FeatureCalculator(path, head, feats, acc=True, directed=False, gpu=True,
-    #                              device=0, verbose=True)
-    # ftr_calc.calculate_features()
-    #
-    # head = os.path.join(os.path.dirname(__file__), "trial_inbar", "10mb_graph2")
-    # path = os.path.join(head, "random_edges2.txt")
-    # feats = ["average_neighbor_degree", "betweenness_centrality", "bfs_moments",
-    #          "closeness_centrality", "communicability_betweenness_centrality",
-    #          "eccentricity", "fiedler_vector", "k_core", "load_centrality",
-    #          "louvain", "motif3", "motif4", "degree", "additional_features"]
-    # ftr_calc = FeatureCalculator(path, head, feats, acc=True, directed=False, gpu=True,
-    #                              device=0, verbose=True)
-    # ftr_calc.calculate_features()
+# if __name__ == "__main__":
+#     head = 'path/to/dir_path'
+#     path = 'path/to/edges_file'
+# # all possible features:
+# #           ["average_neighbor_degree", "betweenness_centrality", "bfs_moments",
+# #            "closeness_centrality", "communicability_betweenness_centrality",
+# #            "eccentricity", "fiedler_vector", "k_core", "load_centrality",
+# #            "louvain", "motif3", "motif4", "degree", "additional_features"]
+#     feats = [any, of, the, features, above]
+#     ftr_calc = FeatureCalculator(path, head, feats, acc=True, directed=False, gpu=True, device=0, verbose=True)    
+#     ftr_calc.calculate_features()
