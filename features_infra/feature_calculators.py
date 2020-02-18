@@ -101,6 +101,10 @@ class FeatureCalculator:
     def _params_order(self, input_order: list = None):
         raise NotImplementedError()
 
+    @property
+    def features(self):
+        return self._features
+
     def to_matrix(self, params_order: list = None, mtype=np.matrix, should_zscore: bool = True):
         mx = np.matrix([self._get_feature(element) for element in self._params_order(params_order)]).astype(np.float32)
         # infinity is possible due to the change of the matrix type (i.e. overflow from 64 bit to 32 bit)
@@ -134,10 +138,10 @@ class NodeFeatureCalculator(FeatureCalculator):
         return input_order
 
     def _get_feature(self, element) -> np.ndarray:
-        return np.array(self._features[element])
+        return np.array(self.features[element])
 
     def edge_based_node_feature(self):
-        nodes_dict = self._features
+        nodes_dict = self.features
         edge_dict = {}
         for edge in self._gnx.edges():
             n1_val = np.array(nodes_dict[edge[0]])
@@ -162,7 +166,7 @@ class EdgeFeatureCalculator(FeatureCalculator):
         return input_order
 
     def _get_feature(self, element) -> np.ndarray:
-        return np.array(self._features[element])
+        return np.array(self.features[element])
 
 
 FeatureMeta = namedtuple("FeatureMeta", ("calculator", "abbr_set"))

@@ -66,11 +66,11 @@ class FeatureCalculator:
         self._graph = nx.read_edgelist(edge_path, delimiter=',', create_using=nx.DiGraph() if directed else nx.Graph())
         vertices = np.array(self._graph.nodes)
         should_be_vertices = np.arange(len(vertices))
+		self._mapping = {i: v for i, v in enumerate(self._graph)}
         if not np.array_equal(vertices, should_be_vertices):
             if self._verbose:
-                self._logger.debug("Relabeling vertices to [0, 1, ..., n-1]")
-            mapping = {i: v for i, v in enumerate(self._graph)}
-            pickle.dump(mapping, open(os.path.join(self._dir_path, "vertices_mapping.pkl"), "wb"))
+                self._logger.debug("Relabeling vertices to [0, 1, ..., n-1]")            
+            pickle.dump(self._mapping, open(os.path.join(self._dir_path, "vertices_mapping.pkl"), "wb"))
             self._graph = nx.convert_node_labels_to_integers(self._graph)
         if self._verbose:
             self._logger.info(str(datetime.datetime.now()) + " , Loaded graph")
@@ -96,7 +96,22 @@ class FeatureCalculator:
             else:
                 self._features[key] = all_node_features[key]
 
-    def calculate_features(self):
+    def calculate_features(self, dumping_specs=None):
+        """
+        :param dumping_specs: A dictionary of specifications how to dump the non-special features.
+                              The default is saving the class only (as a pickle file).
+                              'object': What to save - either 'class' (save the calculator with the features inside),
+                                        'feature' (the feature itself only, saved as name + '_ftr') or 'both'.
+                                        Note that if only the feature is saved, when one calls the calculator again,
+                                        the class will not load the feature and instead calculate it again.
+                              'file_type': If the feature itself is saved, one can choose between two formats:
+                                           either 'pkl' (save the feature as a pickle file, as is) or 'csv' (save a
+                                           csv file of the feature values).
+                              'vertex_names': If the features are saved as a csv file, there is an option of saving
+                                              the name of each vertex in each row, before the feature values.
+                                              The value here is a boolean indicating whether to put the original names
+                                              the vertices in the beginning of each row.
+        """
         if not len(self._features) + len(self._special_features) and self._verbose:
             print("No features were chosen!")
         else:
@@ -104,7 +119,13 @@ class FeatureCalculator:
             # self._adj_matrix = self._adj_matrix.toarray()
             self._raw_features = GraphFeatures(gnx=self._graph, features=self._features, dir_path=self._dir_path,
                                                logger=self._logger)
-            self._raw_features.build(should_dump=True)  # The option of multiple workers in this function exists.
+            if dumping_specs is not None:
+                if 'vertex_names' in dumping_specs:
+                    if dumping_specs['vertex_names']:
+                        dumping_specs['vertex_names'] = self._mapping
+                    else:
+                        del dumping_specs['vertex_names']
+            self._raw_features.build(should_dump=True, dumping_specs=dumping_specs)
             self._other_features = OtherFeatures(self._graph, self._special_features, self._dir_path, self._params,
                                                  self._logger)
             self._other_features.build(should_dump=True)

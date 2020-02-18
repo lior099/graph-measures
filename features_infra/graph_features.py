@@ -8,7 +8,7 @@ from loggers import PrintLogger, EmptyLogger
 
 import networkx as nx
 import numpy as np
-from scipy import sparse
+import pandas as pd
 from operator import itemgetter as at
 
 
@@ -58,19 +58,20 @@ class GraphFeatures(dict):
     def graph(self):
         return self._gnx
 
-    def _build_serially(self, include, force_build: bool = False, dump_path: str = None):
+    def _build_serially(self, include, force_build: bool = False, dump_path: str = None, dumping_specs: dict = None):
         if dump_path is not None and self._gnx is not None:
             pickle.dump(self._gnx, open(self._feature_path("gnx", dump_path), "wb"))
         for name, feature in self.items():
             if force_build or not os.path.exists(self._feature_path(name)):
                 feature.build(include=include)
                 if dump_path is not None:
-                    self._dump_feature(name, feature, dump_path)
+                    self._dump_feature(name, feature, dump_path, dumping_specs)
             else:
                 self._load_feature(name)
 
     # a single process means it is calculated serially
-    def build(self, num_processes: int = 1, include: set = None, should_dump: bool = False, force_build=False):  # , exclude: set=None):
+    def build(self, num_processes: int = 1, include: set = None, should_dump: bool = False, dumping_specs: dict = None,
+              force_build=False):  # , exclude: set=None):
         # if exclude is None:
         #     exclude = set()
         if include is None:
@@ -82,7 +83,7 @@ class GraphFeatures(dict):
                 dump_path = self._base_dir
                 if not os.path.exists(dump_path):
                     os.makedirs(dump_path)
-            return self._build_serially(include, dump_path=dump_path, force_build=force_build)
+            return self._build_serially(include, dump_path=dump_path, force_build=force_build, dumping_specs=dumping_specs)
 
         request_queue = Queue()
         workers = [Worker(request_queue, self, include, logger=self._logger) for _ in range(num_processes)]
@@ -140,11 +141,35 @@ class GraphFeatures(dict):
             dir_path = self._base_dir
         return os.path.join(dir_path, name + ".pkl")
 
-    def _dump_feature(self, name, feature, dir_path):
+    def _dump_feature(self, name, feature, dir_path, dumping_specs=None):
         if feature.is_loaded:
-            prev_meta = feature.clean_meta()  # in order not to save unnecessary data
-            pickle.dump(feature, open(self._feature_path(name, dir_path), "wb"))
-            feature.load_meta(prev_meta)
+            if dumping_specs is not None:
+                cl = True if dumping_specs['object'] in ['class', 'both'] else False  # Whether to save the class
+                ftr = True if dumping_specs['object'] in ['feature', 'both'] else False  # Whether to save the ftr value
+            else:
+                cl = True
+                ftr = False
+            if cl:
+                prev_meta = feature.clean_meta()  # in order not to save unnecessary data
+                pickle.dump(feature, open(self._feature_path(name, dir_path), "wb"))
+                feature.load_meta(prev_meta)
+            if ftr:
+                if dumping_specs['file_type'] == 'pkl':
+                    pickle.dump(feature.features, open(self._feature_path(name + "_ftr", dir_path), "wb"))
+                else:  # dumping_specs['file_type'] is 'csv'
+                    ftr_as_dict = self._feature_to_dict(feature.features)
+                    ftr_df = pd.DataFrame(ftr_as_dict).transpose()
+                    try:
+                        ftr_df = ftr_df.rename(index=dumping_specs['vertex_names'])
+                        if dir_path is None:
+                            dir_path = self._base_dir
+                        saving_path = os.path.join(dir_path, name + "_ftr.csv")
+                        ftr_df.to_csv(saving_path, header=False)
+                    except KeyError:
+                        if dir_path is None:
+                            dir_path = self._base_dir
+                        saving_path = os.path.join(dir_path, name + "_ftr.csv")
+                        ftr_df.to_csv(saving_path, header=False, index=False)
 
     def dump(self, dir_path=None):
         if dir_path is None:
@@ -180,6 +205,17 @@ class GraphFeatures(dict):
     def to_dict(self, dtype=None, should_zscore: bool = True):
         mx = self.to_matrix(dtype=dtype, mtype=np.matrix, should_zscore=should_zscore)
         return {node: mx[i, :] for i, node in enumerate(sorted(self._gnx))}
+
+    @staticmethod
+    def _feature_to_dict(feat):
+        # Creating a dictionary of features that can enter the pandas DataFrame.
+        if type(feat) == dict:
+            if type(next(iter(feat.values()))) in [list, np.ndarray]:
+                return feat
+            else:
+                return {key: [value] for key, value in feat.items()}
+        else:
+            return {i: (feat[i] if type(feat[i]) in [list, np.ndarray] else [feat[i]]) for i in range(len(feat))}
 
 
 # class GraphNodeFeatures(GraphFeatures):
