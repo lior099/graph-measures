@@ -2,8 +2,8 @@
 
 Topological feature calculators infrastructure.
 
-### C code
-**NEW (22.12.19): Setting GPU motif calculation on a specific device**
+### C code - Motif calculations using GPU
+**NEW (07.05.20): An updated motif calculation algorithm lowers the GPU memory usage.**
 
 For installation and running instructions for the C code, refer to the [manual](features_algorithms/accelerated_graph_features/Cache%20Accelerated%20Graph%20Features%20Manual.pdf).
 
