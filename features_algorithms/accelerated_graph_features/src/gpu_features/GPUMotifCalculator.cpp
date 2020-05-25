@@ -54,20 +54,12 @@ void GPUMotifCalculator::init() {
     mGraph->CureateUndirectedGraph(inverse, fullGraph);
     this->numOfNodes = this->mGraph->GetNumberOfNodes();
     this->numOfEdges = this->mGraph->GetNumberOfEdges();
-    //std::cout << "Load variations" << std::endl;
     this->LoadMotifVariations(level, directed);
-    //std::cout << "All motifs" << std::endl;
     this->SetAllMotifs();
-    //std::cout << "Sorted Nodes" << std::endl;
     this->SetSortedNodes();
-    //std::cout << "Removal Index" << std::endl;
     this->SetRemovalIndex();
-    //std::cout << "Feature counters" << std::endl;
     this->InitFeatureCounters();
-    //std::cout << "Copy to GPU" << std::endl;
     this->CopyAllToDevice();
-    //std::cout << "Done" << std::endl;
-    //std::cout << this->removalIndex->size() << std::endl;
 }
 
 GPUMotifCalculator::GPUMotifCalculator(int level, bool directed, int cudaDevice) :
@@ -88,7 +80,6 @@ void GPUMotifCalculator::InitFeatureCounters() {
         this->numOfMotifs = s.size() - 1;
         for (auto motif : s)
             if (motif != -1)
-                //				(*motifCounter)[motif] = 0;
                 motifCounter->push_back(0);
 
         features->push_back(motifCounter);
@@ -97,17 +88,6 @@ void GPUMotifCalculator::InitFeatureCounters() {
 }
 
 void GPUMotifCalculator::LoadMotifVariations(int level, bool directed) {
-
-    //
-    //	string suffix;
-    //	if (directed)
-    //		suffix = "_directed_cpp.txt";
-    //	else
-    //		suffix = "_undirected_cpp.txt";
-    //
-    //	string fileName = MOTIF_VARIATIONS_PATH + "/" + std::to_string(level)
-    //			+ suffix;
-    //	std::ifstream infile(fileName);
     const char* motifVariations[4] = { undirected3, directed3, undirected4,
                                        directed4 };
     const int numOfMotifsOptions[4] = { 8, 64, 64, 4096 };
@@ -129,8 +109,6 @@ void GPUMotifCalculator::LoadMotifVariations(int level, bool directed) {
         } catch (exception &e) {
             y = -1;
         }
-        //		cout << line << endl;
-        //		cout << x << ":" << y << endl;
 
         (*nodeVariations)[x] = y;
     }
@@ -165,9 +143,6 @@ void GPUMotifCalculator::SetRemovalIndex() {
 }
 
 void GPUMotifCalculator::CopyAllToDevice() {
-    //	thrust::device_vector<unsigned int> deviceMotifVariations; // @suppress("Type cannot be resolved")// @suppress("Symbol is not resolved")
-    //	thrust::device_vector<unsigned int> deviceRemovalIndex; // @suppress("Type cannot be resolved") // @suppress("Symbol is not resolved")
-    //	thrust::device_vector<unsigned int> deviceSortedNodesByDegree;// @suppress("Type cannot be resolved") // @suppress("Symbol is not resolved")
 
     /*
      * 1) Allocate unified memory
@@ -175,10 +150,6 @@ void GPUMotifCalculator::CopyAllToDevice() {
      * 3) delete the memory in d'tor
      */
 
-    //	deviceMotifVariations = *(this->nodeVariations);
-    //	this->devicePointerMotifVariations = thrust::raw_pointer_cast(&deviceMotifVariations[0]);
-//	int i = 0;
-//	//std::cout << "Checker: " << i++ << std::endl;
     gpuErrchk(
             cudaDeviceSetLimit(cudaLimitMallocHeapSize,
                                size_t(10) * size_t(numOfNodes) * size_t(numOfNodes)
@@ -186,31 +157,20 @@ void GPUMotifCalculator::CopyAllToDevice() {
     size_t currentLimit;
     gpuErrchk(cudaDeviceGetLimit(&currentLimit, cudaLimitMallocHeapSize));
 
-    //std::cout << "Current limit is: " << currentLimit << std::endl;
     gpuErrchk(
             cudaMallocManaged(&(this->devicePointerMotifVariations),
                               nodeVariations->size() * sizeof(unsigned int)));
-    //	//std::cout << "between"<<std::endl;
-
-    //	//std::cout << this->nodeVariations->data()[0] <<std::endl;
-
-    //	//std::cout << this->nodeVariations->size() <<std::endl;
 
     std::memcpy(this->devicePointerMotifVariations,
                 &((*(this->nodeVariations))[0]),
                 nodeVariations->size() * sizeof(unsigned int));
     // Removal index
-    //	deviceRemovalIndex = *(this->removalIndex);
-    //	//std::cout << "Checker: " << i++ << std::endl;
     gpuErrchk(
             cudaMallocManaged(&(this->devicePointerRemovalIndex),
                               removalIndex->size() * sizeof(unsigned int)));
     std::memcpy(this->devicePointerRemovalIndex, this->removalIndex->data(),
                 removalIndex->size() * sizeof(unsigned int));
     //Sorted nodes
-    //	deviceSortedNodesByDegree = *(this->sortedNodesByDegree);
-    //	this->devicePointerSortedNodesByDegree = thrust::raw_pointer_cast(&deviceSortedNodesByDegree[0]);
-    //	//std::cout << "Checker: " << i++ << std::endl;
     gpuErrchk(
             cudaMallocManaged(&(this->devicePointerSortedNodesByDegree),
                               sortedNodesByDegree->size() * sizeof(unsigned int)));
@@ -219,50 +179,35 @@ void GPUMotifCalculator::CopyAllToDevice() {
                 sortedNodesByDegree->size() * sizeof(unsigned int));
 
     // Feature matrix
-    //	//std::cout << "Checker: " << i++ << std::endl;
-    //std::cout << "Num of Nodes:" << this->numOfNodes << std::endl;
-    //std::cout << "Num of node variations: " << this->nodeVariations->size()
-    //<< std::endl;
     unsigned int size = this->numOfNodes * this->nodeVariations->size()
                         * sizeof(unsigned int);
-//	//std::cout << "between" << std::endl;
     gpuErrchk(cudaMallocManaged(&(this->deviceFeatures), size));
 
     // Original graph
-    //	//std::cout << "Checker: " << i++ << std::endl;
     gpuErrchk(
             cudaMallocManaged(&deviceOriginalGraphOffsets,
                               (this->numOfNodes + 1) * sizeof(int64)));
-    //	//std::cout << "Checker: " << i++ << std::endl;
     gpuErrchk(
             cudaMallocManaged(&deviceOriginalGraphNeighbors,
                               (this->numOfEdges) * sizeof(unsigned int)));
-    //	//std::cout << "Checker: " << i++ << std::endl;
     std::memcpy(deviceOriginalGraphOffsets, this->mGraph->GetOffsetList(),
                 (this->numOfNodes + 1) * sizeof(int64));
-    //	//std::cout << "Checker: " << i++ << std::endl;
     std::memcpy(deviceOriginalGraphNeighbors, this->mGraph->GetNeighborList(),
                 (this->numOfEdges) * sizeof(unsigned int));
 
     // Full graph
-    //	//std::cout << "Checker: " << i++ << std::endl;
     gpuErrchk(
             cudaMallocManaged(&deviceFullGraphOffsets,
                               (this->fullGraph.GetNumberOfNodes() + 1) * sizeof(int64)));
-    //	//std::cout << "Checker: " << i++ << std::endl;
     gpuErrchk(
             cudaMallocManaged(&deviceFullGraphNeighbors,
                               (this->fullGraph.GetNumberOfEdges())
                               * sizeof(unsigned int)));
-
-    //	//std::cout << "Checker: " << i++ << std::endl;
     std::memcpy(deviceFullGraphOffsets, this->fullGraph.GetOffsetList(),
                 (this->fullGraph.GetNumberOfNodes() + 1) * sizeof(int64));
-    //	//std::cout << "Checker: " << i++ << std::endl;
     std::memcpy(deviceFullGraphNeighbors, this->fullGraph.GetNeighborList(),
                 (this->fullGraph.GetNumberOfEdges()) * sizeof(unsigned int));
 
-    //	//std::cout << "Checker: " << i++ << std::endl;
 
     //Assign to global variables
 
@@ -293,8 +238,6 @@ void Motif3Kernel() {
     auto n = globalNumOfNodes;
 
     for (int i = index; i < n; i += stride){
-        // Ascending order - Takes a shorter time than Descending
-//	for (int i = n - index - 1; i >= 0 ; i -= stride){
         Motif3Subtree(globalDevicePointerSortedNodesByDegree[i]);
     }
 }
@@ -304,10 +247,7 @@ void Motif4Kernel() {
     int index = blockIdx.x * blockDim.x + threadIdx.x;
     int stride = blockDim.x * gridDim.x;
     auto n = globalNumOfNodes;
-    // Descending order
     for (int i = index; i < n; i += stride){
-        // Ascending order - Takes a shorter time than Descending
-//	for (int i = n - index - 1; i >= 0 ; i -= stride){
         Motif4Subtree(globalDevicePointerSortedNodesByDegree[i]);
     }
 }
@@ -318,16 +258,6 @@ vector<vector<unsigned int> *> *GPUMotifCalculator::Calculate() {
     int numBlocks = (this->numOfNodes + blockSize - 1) / blockSize;
 
     //Prefetch all relevant memory
-    /*
-     globalDevicePointerMotifVariations = this->devicePointerMotifVariations;
-     globalDevicePointerRemovalIndex = this->devicePointerRemovalIndex;
-     globalDevicePointerSortedNodesByDegree = this -> devicePointerSortedNodesByDegree;
-     globalDeviceOriginalGraphOffsets = this->deviceOriginalGraphOffsets;
-     globalDeviceOriginalGraphNeighbors = this -> deviceOriginalGraphNeighbors;
-     globalDeviceFullGraphOffsets = this->deviceFullGraphOffsets;
-     globalDeviceFullGraphNeighbors = this->deviceFullGraphNeighbors;
-     globalDeviceFeatures = this->deviceFeatures;
-     */
     cudaSetDevice(this->cudaDevice);
     int device = -1;
     cudaGetDevice(&device);
@@ -354,7 +284,6 @@ vector<vector<unsigned int> *> *GPUMotifCalculator::Calculate() {
                          * sizeof(unsigned int), device, NULL);
 
     if (this->level == 3) {
-        std::cout << "Num of motifs: "<<globalNumOfMotifs <<std::endl;
         Motif3Kernel<<<numBlocks, blockSize>>>();
     } else {
         Motif4Kernel<<<numBlocks, blockSize>>>();
@@ -379,7 +308,7 @@ vector<vector<unsigned int> *> *GPUMotifCalculator::Calculate() {
 __device__
 void Motif3Subtree(unsigned int root) {
 
-    /* Since cashGraph cant be modified at runtime, we hold Removal Index,
+    /* Since cacheGraph cannot be modified at runtime, we hold Removal Index,
     which will be the first iteration where the node no longer exists in the graph.
     we will verify that the removal index of a node is lower than the removal index of the root of the current subtree.
     root_idx is also our current iteration */
@@ -412,7 +341,6 @@ void Motif3Subtree(unsigned int root) {
                     GroupUpdater(arr, 3);
                 }
             } else {
-                //     visited_vertices[n2] = true;
                 unsigned int arr[] = { root, n1, n2 };
                 // update motif counter [r,n1,n2]
                 GroupUpdater(arr, 3);
@@ -506,7 +434,7 @@ void Motif4Subtree(unsigned int root) {
                     continue;
                 /* If there is an edge between n1 and n11, we would have already counted the motif as a motif of depth 2.
                  If no such edge exists, we only want to count the motif once.  */
-                if (!AreNeighbors(root,n2) && n11 != n1) {
+                if (!((AreNeighbors(root,n2)) || (AreNeighbors(n2,root))) && n11 != n1) {
                     bool edgeExists = AreNeighbors(n2, n11)
                                       || AreNeighbors(n11, n2);
                     if (!edgeExists || (edgeExists && n1 < n11)) {
@@ -532,7 +460,7 @@ void Motif4Subtree(unsigned int root) {
                     continue;
                  // If both nodes are not neighbors of root (were seen at level 2) then the motif wasn't counted as a depth 1 motif
                 if (!AreNeighbors(root,n21) && !AreNeighbors(n21,root) && !AreNeighbors(root,n22) &&
-                    !AreNeighbors(n22,root) && (root!=n22) && (root!=n21) ) {
+                    !AreNeighbors(n22,root)) {
                     unsigned int arr[] = { root, n1, n21, n22 };
                     GroupUpdater(arr, 4); // update motif counter [r,n1,n21,n22]
                 }
@@ -553,7 +481,7 @@ void Motif4Subtree(unsigned int root) {
 
             /* According to the rules we proved, check : */
             // n2 is not a first neighbor
-            if(AreNeighbors(root,n2) && root!=n2) {
+            if(AreNeighbors(root,n2) || AreNeighbors(n2,root)) {
                 continue;
             }
 
@@ -565,13 +493,13 @@ void Motif4Subtree(unsigned int root) {
                 if (globalDevicePointerRemovalIndex[n3] <= idx_root)
                     continue;
 
-                    /* According to the proved rules, check that n3 is not a first neighbor and also not a neighbor of the first neighbor n1.
-                    if so, continue */
-                    if ((AreNeighbors(root,n3) || (AreNeighbors(n3,root))) || (AreNeighbors(n1,n3) || (AreNeighbors(n3,n1) )) || (root==n3) ) {
-                        continue;
-                    }
-                    unsigned int arr[] = { root, n1, n2, n3 };
-                    GroupUpdater(arr, 4);
+                /* According to the proved rules, check that n3 is not a first neighbor, not a neighbor of the first neighbor n1 and
+                not the neighbor n1 itself. If it is any of them, continue */
+                if ((AreNeighbors(root,n3) || (AreNeighbors(n3,root))) || (AreNeighbors(n1,n3) || (AreNeighbors(n3,n1) )) || (n1==n3)) {
+                    continue;
+                }
+                unsigned int arr[] = { root, n1, n2, n3 };
+                GroupUpdater(arr, 4);
             }									// end loop THIRD NEIGHBORS
         }				// end loop SECOND NEIGHBORS THIRD TIME'S THE CHARM
 
@@ -581,16 +509,12 @@ void Motif4Subtree(unsigned int root) {
 
 __device__
 bool AreNeighbors(unsigned int p, unsigned int q) {
-    // int64* deviceOriginalGraphOffsets;
-    // unsigned int* deviceOriginalGraphNeighbors;
     int first = globalDeviceOriginalGraphOffsets[p],//first array element
     last = globalDeviceOriginalGraphOffsets[p + 1] - 1,	//last array element
     middle;		//mid point of search
 
     while (first <= last) {
         middle = (int)(first + last) / 2; //this finds the mid point
-        ////std::cout << "Binary search: " << middle << std::endl;
-        //TODO: fix overflow problem
         if (globalDeviceOriginalGraphNeighbors[middle] == q) {
             return true;
         } else if (globalDeviceOriginalGraphNeighbors[middle] < q)
@@ -607,18 +531,9 @@ bool AreNeighbors(unsigned int p, unsigned int q) {
 
 __device__
 void GroupUpdater(unsigned int group[], int size) {
-    // TODO: count overall number of motifs in graph (maybe different class)?
-    //printf("In GroupUpdater");
-
     int groupNumber = GetGroupNumber(group, size);
     int motifNumber = (globalDevicePointerMotifVariations)[groupNumber];
-//	if(size==3){
-    //std::cout << motifNumber <<","<<group[0]<<","<<group[1]<<","<<group[2]<<std::endl;
-//		printf("%d,%u,%u,%u\n",motifNumber,group[0],group[1],group[2]);
-//	}
-
     if (motifNumber != -1) {
-        //	printf("Found motif!\n");
         for (int i = 0; i < size; i++)
             atomicAdd(
                     globalDeviceFeatures

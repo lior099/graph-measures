@@ -13,18 +13,11 @@ void MotifCalculator::init() {
 	mGraph->InverseGraph(inverse);
 	mGraph->CureateUndirectedGraph(inverse, fullGraph);
 
-	//std::cout << "Load variations" << std::endl;
 	this->LoadMotifVariations(level, directed);
-	//std::cout << "All motifs" << std::endl;
 	this->SetAllMotifs();
-	//std::cout << "Sorted Nodes" << std::endl;
 	this->SetSortedNodes();
-	//std::cout << "Removal Index" << std::endl;
 	this->SetRemovalIndex();
-	//std::cout << "Feature counters" << std::endl;
 	this->InitFeatureCounters();
-	std::cout << "Done" << std::endl;
-	//std::cout << this->removalIndex->size() << std::endl;
 
 }
 
@@ -37,7 +30,6 @@ MotifCalculator::MotifCalculator(int level, bool directed, string motif_path) :
 		throw invalid_argument("Level must be 3 or 4");
 	this->level = level;
 	this->features = new std::vector<vector<unsigned int>*>;
-//	interesting_motifs =  {3, 4, 6, 15, 17,23, 24, 26, 27, 29, 78, 80};
 
 }
 
@@ -48,7 +40,6 @@ void MotifCalculator::InitFeatureCounters() {
 				this->allMotifs->end());
 		for (auto motif : s)
 			if (motif != -1)
-//				(*motifCounter)[motif] = 0;
 				motifCounter->push_back(0);
 
 		features->push_back(motifCounter);
@@ -59,16 +50,6 @@ void MotifCalculator::InitFeatureCounters() {
 void MotifCalculator::LoadMotifVariations(int level, bool directed) {
 
 	this->nodeVariations = new std::map<unsigned int, int>();
-//
-//	string suffix;
-//	if (directed)
-//		suffix = "_directed_cpp.txt";
-//	else
-//		suffix = "_undirected_cpp.txt";
-//
-//	string fileName = MOTIF_VARIATIONS_PATH + "/" + std::to_string(level)
-//			+ suffix;
-//	std::ifstream infile(fileName);
 	const char* motifVariations[4] = { undirected3, directed3, undirected4,
 			directed4 };
 
@@ -88,8 +69,6 @@ void MotifCalculator::LoadMotifVariations(int level, bool directed) {
 			y = -1;
 
 		}
-//		cout << line << endl;
-//		cout << x << ":" << y << endl;
 
 		(*nodeVariations)[x] = y;
 	}
@@ -131,19 +110,13 @@ void MotifCalculator::SetRemovalIndex() {
 vector<vector<unsigned int>*>* MotifCalculator::Calculate() {
 
 	if (this->level == 3) {
-		//std::cout << "Start 3" << std::endl;
-
 		for (auto node : *(this->sortedNodesByDegree)) {
-			//std::cout << node << std::endl;
 			Motif3Subtree(node);
 		}
 	} else {
-		//std::cout << "Start 4" << std::endl;
-
 		for (auto node : *(this->sortedNodesByDegree))
 			Motif4Subtree(node);
 	}
-//	std::cout << "Done All" << std::endl;
 	return this->features;
 }
 
@@ -158,12 +131,9 @@ void MotifCalculator::Motif3Subtree(unsigned int root) {
 	const unsigned int* neighbors = fullGraph.GetNeighborList();// all neighbors - ancestors and descendants
 	const int64* offsets = fullGraph.GetOffsetList();
 
-	// TODO problem with dual edges
-	//std::cout << "Mark" << std::endl;
 	for (int64 i = offsets[root]; i < offsets[root + 1]; i++) // loop first neighbors
 		if (this->removalIndex->at(neighbors[i]) > idx_root) // n1 not handled yet
 			visited_vertices[neighbors[i]] = visit_idx++;
-	//std::cout << "Mark" << std::endl;
 	for (int64 n1_idx = offsets[root]; n1_idx < offsets[root + 1]; n1_idx++) { // loop first neighbors
 		unsigned int n1 = neighbors[n1_idx];
 		if (this->removalIndex->at(n1) <= idx_root)		// n1 already handled
@@ -184,24 +154,17 @@ void MotifCalculator::Motif3Subtree(unsigned int root) {
 		}	// end LOOP_SECOND_NEIGHBORS
 
 	}	// end LOOP_FIRST_NEIGHBORS
-	//std::cout << "Mark" << std::endl;
 	vector<vector<unsigned int> *> *n1_comb = neighbors_combinations(neighbors,
 			offsets[root], offsets[root + 1]);
 	for (auto it = n1_comb->begin(); it != n1_comb->end(); ++it) {
 		unsigned int n1 = (**it)[0];
 		unsigned int n2 = (**it)[1];
-		//std::cout << "\t" << n1 << "," << n2 << std::endl;
 		if (this->removalIndex->at(n1) <= idx_root
 				|| this->removalIndex->at(n2) <= idx_root)// motif already handled
 			continue;
-		//std::cout << "Mark1" << std::endl;
-		//std::cout << (visited_vertices[n1] < visited_vertices[n2]) << std::endl;
-		//std::cout << mGraph->areNeighbors(n1, n2) << std::endl;
-		//std::cout << mGraph->areNeighbors(n2, n1) << std::endl;
 		if ((visited_vertices[n1] < visited_vertices[n2])
 				&& !(mGraph->areNeighbors(n1, n2)
 						|| mGraph->areNeighbors(n2, n1)))// check n1, n2 not neighbors
-			//std::cout << "Mark2" << std::endl;
 			this->GroupUpdater(std::vector<unsigned int> { root, n1, n2 });	// update motif counter [r,n1,n2]
 	}	// end loop COMBINATIONS_NEIGHBORS_N1
 	for (auto p : *n1_comb) {
@@ -218,12 +181,10 @@ void MotifCalculator::Motif4Subtree(unsigned int root) {
 	const unsigned int* neighbors = fullGraph.GetNeighborList();// all neighbors - ancestors and descendants
 	const int64* offsets = fullGraph.GetOffsetList();
 
-	// TODO problem with dual edges
 	for (int64 i = offsets[root]; i < offsets[root + 1]; i++) // loop first neighbors
 		if (this->removalIndex->at(neighbors[i]) > idx_root) // n1 not handled yet
 			visited_vertices[neighbors[i]] = 1;
 
-	// TODO: add combinations_3 for first neighbors
 	/*
 	 *    for n1, n2, n3 in combinations(neighbors_first_deg, 3):
 	 yield [root, n1, n2, n3]
@@ -273,7 +234,7 @@ void MotifCalculator::Motif4Subtree(unsigned int root) {
 				unsigned int n11 = neighbors[n11_idx];
 				if (this->removalIndex->at(n11) <= idx_root) // n2 already handled
 					continue;
-				if (visited_vertices[n2] == 2 && n11 != n1) { //TODO: verify
+				if (visited_vertices[n2] == 2 && n11 != n1) { //
 					bool edgeExists = mGraph->areNeighbors(n2, n11)
 							|| mGraph->areNeighbors(n11, n2);
 					if (!edgeExists || (edgeExists && n1 < n11)) {
@@ -355,27 +316,9 @@ void MotifCalculator::Motif4Subtree(unsigned int root) {
 }
 
 void MotifCalculator::GroupUpdater(std::vector<unsigned int> group) {
-// TODO: count overall number of motifs in graph (maybe different class)?
 	int groupNumber = GetGroupNumber(group);
 	int motifNumber = (*(this->nodeVariations))[groupNumber];
 
-//	int interestingMotifs[] = { 3, 4, 6, 15, 17, 23, 24, 26, 27, 29, 78, 80 };
-
-//	if(std::find(group.begin(),group.end(),0)!=group.end() && motifNumber == 17)
-//		std::cout << "A 0/17 group "<<group[0]<<","<<group[1]<<","<<group[2]<<","<<group[3]<<std::endl;
-//	if (std::find(group.begin(),group.end(),4)!=group.end()) {
-//
-//		if (motifNumber == 15) {
-//			std::cout << motifNumber << " : ";
-//			for (auto n : group)
-//				std::cout << n << ",";
-//			std::cout << std::endl;
-//		}
-//	}
-//	std::cout << motifNumber << ",";
-//	for (auto n : group)
-//		std::cout << n << ",";
-//	std::cout << std::endl;
 	if (motifNumber != -1)
 		for (auto node : group)
 			(*(*features)[node])[motifNumber]++;

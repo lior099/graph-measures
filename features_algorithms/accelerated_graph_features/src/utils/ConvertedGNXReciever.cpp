@@ -24,9 +24,7 @@ ConvertedGNXReciever::ConvertedGNXReciever(dict converted_graph) {
 	this->neighbors->reserve(len(neighborList));
 	this->weights = new std::vector<double>();
 
-//	std::cout << "Offset List:" << std::endl;
 	for (int i = 0; i < len(offsetList); ++i) {
-//		std::cout << extract<int>(offsetList[i]) << std::endl;
 		int64 currentOffset;
 		currentOffset =
 				static_cast<int64>(extract<unsigned int>(offsetList[i]));
@@ -34,16 +32,13 @@ ConvertedGNXReciever::ConvertedGNXReciever(dict converted_graph) {
 		this->offsets->push_back(currentOffset);
 	}
 
-//	std::cout << "Neighbor List:" << std::endl;
 	for (int i = 0; i < len(neighborList); ++i) {
-//		std::cout << extract<int>(neighborList[i]) << std::endl;
 		unsigned int currentNeighbor = extract<unsigned int>(neighborList[i]);
 		this->neighbors->push_back(currentNeighbor);
 	}
 	this->mGraph = new CacheGraph(directed);
 	if(withWeights){
 		for (int i = 0; i < len(weightsList); ++i) {
-		//		std::cout << extract<int>(neighborList[i]) << std::endl;
 				double currentNeighbor = extract<double>(weightsList[i]);
 				this->weights->push_back(currentNeighbor);
 			}
@@ -57,25 +52,6 @@ ConvertedGNXReciever::ConvertedGNXReciever(dict converted_graph) {
 
 
 }
-
-//ConvertedGNXReciever::ConvertedGNXReciever(const char* loadFileName) {
-//
-//	this->neighbors = NULL;
-//	this->offsets = NULL;
-//	this->mGraph = new CacheGraph();
-//	mGraph->LoadFromFile(loadFileName);
-//
-//}
-//
-//ConvertedGNXReciever::ConvertedGNXReciever(dict converted_graph,
-//		const char* saveFileName) {
-//	this->neighbors = NULL;
-//	this->offsets = NULL;
-//	this->mGraph = NULL;
-//	ConvertedGNXReciever(converted_graph);
-//	this->mGraph->SaveToFile(saveFileName);
-//
-//}
 
 ConvertedGNXReciever::~ConvertedGNXReciever() {
 

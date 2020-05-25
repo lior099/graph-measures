@@ -12,7 +12,6 @@
 #include <vector>
 #include <iomanip>
 #include <exception>
-//#include <boost/graph/adjacency_list.hpp>
 #pragma warning(push)
 #pragma warning(disable: 4996) //4996 for _CRT_SECURE_NO_WARNINGS equivalent
 #include <numeric>
@@ -96,7 +95,6 @@ public:
 	void CureateUndirectedGraph(const CacheGraph& InvertedGraph,
 			CacheGraph& UndirectedGraph) const;
 
-	//void ToBoostGraph() const;
 	std::vector<unsigned int> ComputeNodeDegrees() const;
 	std::vector<float> ComputeNodePageRank(float dumping,
 			unsigned int NumberOfIterations) const;
@@ -124,12 +122,12 @@ private:
 
 	/**
 	 * Returns true if the first argument is sorted before the second one.
-	 * In our case, we sort the nodes by descending degree order, so we return true
-	 * iff the degree of the first argument is larger than the second's.
+	 * In our case, we sort the nodes by ascending degree order, so we return true
+	 * iff the degree of the first argument is smaller than the second's.
 	 */
 	struct {
 		bool operator()(const NodeWithDegree& lhs, const NodeWithDegree& rhs) {
-			return lhs.degree > rhs.degree;
+			return lhs.degree < rhs.degree;
 		}
 	} cmpNodesByDegree;
 };

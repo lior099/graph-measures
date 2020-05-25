@@ -71,11 +71,8 @@ class FibHeap
     FibNode *cur = x;
     while(true)
       {
-	/*std::cerr << "cur: " << cur << std::endl;
-	  std::cerr << "x: " << x << std::endl;*/
 	if (cur->left && cur->left != x)
 	  {
-	    //std::cerr << "cur left: " << cur->left << std::endl;
 	    FibNode *tmp = cur;
 	    cur = cur->left;
 	    if (tmp->child)

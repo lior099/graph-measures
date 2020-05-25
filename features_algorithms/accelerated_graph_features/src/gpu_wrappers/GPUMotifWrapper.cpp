@@ -14,7 +14,6 @@ void BoostDefGPUMotifCalculator() {
 
 py::list GPUMotifCalculatorWrapper(dict converted_dict,int level, int cudaDevice) {
 	bool directed = extract<bool>(converted_dict["directed"]);
-	//	std::cout << directed <<std::endl;
 	ConvertedGNXReciever reciever(converted_dict);
 	GPUMotifCalculator calc(level, directed, cudaDevice);
 	calc.setGraph(reciever.getCacheGraph());

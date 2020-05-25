@@ -28,9 +28,7 @@ namespace py = boost::python;
 template<class T>
 py::list vectorToPythonList(const std::vector<T>& v){
 	py::list l;
-//	std::cout<<"After list create"<<std::endl;
 	for(int i=0;i<v.size();i++){
-//		std::cout<<"In loop iter "<<i<<std::endl;
 		l.append<T>(v[i]);
 	}
 

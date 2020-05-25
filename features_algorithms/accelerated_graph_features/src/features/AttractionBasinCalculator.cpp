@@ -44,14 +44,9 @@ void AttractionBasinCalculator::printVars() {
 }
 
 std::vector<double>* AttractionBasinCalculator::Calculate() {
-	//std::cout << "Begin"<<std::endl;
 	this->calc_attraction_basin_dists();
-	//std::cout << "After dists"<<std::endl;
 	this->calc_average_per_dist();
-	//std::cout << "After avg"<<std::endl;
 	unsigned int numOfNodes = mGraph->GetNumberOfNodes();
-	//std::cout <<"alpha:"<<alpha<<std::endl;
-	//printVars();
 
 	features = new std::vector<double>();
 	for (unsigned int node = 0; node < numOfNodes; node++) {
@@ -65,16 +60,11 @@ std::vector<double>* AttractionBasinCalculator::Calculate() {
 			auto dist = x.first;
 			auto occurances = x.second;
 
-			//	std::cout <<"\tdist: " <<dist<<std::endl;
-			//	std::cout <<"\toccurances: " <<occurances<<std::endl;
-			//	std::cout << "\tavg at dist: " <<average_out_per_dist->at(dist)<<std::endl;
-			//	std::cout <<"\tpow: "<<1/(double) pow(alpha,dist)<<std::endl;
 			denominator += (occurances / average_out_per_dist->at(dist))
 					* (1 / (double) pow(alpha, dist));
 
 		} //end summing loop
 
-//	std::cout << "denom : "<<denominator<<std::endl;
 		if (denominator != 0) {
 			for (auto& x : *in_dist) {
 				auto dist = x.first;
