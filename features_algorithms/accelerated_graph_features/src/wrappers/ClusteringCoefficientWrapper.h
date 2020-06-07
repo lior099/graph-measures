@@ -2,7 +2,7 @@
  * ClusteringCoefficientWrapper.h
  *
  *  Created on: Nov 12, 2018
- *      Author: ori
+ *
  */
 
 #ifndef UTILS_CLUSTERINGCOEFFICIENTWRAPPER_H_

@@ -2,7 +2,7 @@
  * FlowCalculator.cpp
  *
  *  Created on: Jan 22, 2019
- *      Author: ori
+ *
  */
 
 #include "../includes/FlowCalculator.h"

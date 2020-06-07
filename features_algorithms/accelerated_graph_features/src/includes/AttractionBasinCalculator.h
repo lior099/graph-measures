@@ -2,7 +2,7 @@
  * AttractionBasinCalculator.h
  *
  *  Created on: Jan 14, 2019
- *      Author: ori
+ *
  */
 
 #ifndef FEATURES_ATTRACTIONBASINCALCULATOR_H_

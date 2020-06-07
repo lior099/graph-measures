@@ -2,7 +2,7 @@
  * ConvertedGNXReciever.h
  *
  *  Created on: Oct 28, 2018
- *      Author: ori
+ *
  */
 
 #ifndef UTILS_CONVERTEDGNXRECIEVER_H_

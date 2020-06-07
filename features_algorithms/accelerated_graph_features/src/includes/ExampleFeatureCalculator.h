@@ -2,7 +2,7 @@
  * ExampleFeatureCalculator.h
  *
  *  Created on: Oct 29, 2018
- *      Author: ori
+ *
  */
 
 #ifndef EXAMPLEFEATURECALCULATOR_H_

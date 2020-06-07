@@ -2,7 +2,7 @@
  * BFSMomentsWrapper.h
  *
  *  Created on: Nov 12, 2018
- *      Author: ori
+ *
  */
 
 #ifndef WRAPPERS_BFSMOMENTSWRAPPER_H_

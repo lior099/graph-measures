@@ -2,7 +2,7 @@
  * ExampleFeatureCalculator.cpp
  *
  *  Created on: Oct 29, 2018
- *      Author: ori
+ *
  */
 
 #include "../includes/ExampleFeatureCalculator.h"

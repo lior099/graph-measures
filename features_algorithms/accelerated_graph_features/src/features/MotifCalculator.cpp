@@ -2,7 +2,7 @@
  * MotifCalculator.cpp
  *
  *  Created on: Dec 2, 2018
- *      Author: ori
+ *
  */
 
 #include "../includes/MotifCalculator.h"

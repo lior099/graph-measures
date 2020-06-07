@@ -2,7 +2,7 @@
  * ExampleWrapper.cpp
  *
  *  Created on: Nov 11, 2018
- *      Author: ori
+ *
  */
 
 #include "ExampleWrapper.h"

@@ -4,7 +4,7 @@
  * A container for the cache aware representation of a graph.
  *
  *  Created on: Oct 28, 2018
- *      Author: ori
+ *
  */
 
 #include "../includes/CacheGraph.h"

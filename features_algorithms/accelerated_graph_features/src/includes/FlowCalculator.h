@@ -2,7 +2,7 @@
  * FlowCalculator.h
  *
  *  Created on: Jan 22, 2019
- *      Author: ori
+ *
  */
 
 #ifndef FEATURES_FLOWCALCULATOR_H_

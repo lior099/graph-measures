@@ -2,7 +2,7 @@
  * NodePageRankFeatureCalculator.h
  *
  *  Created on: Nov 12, 2018
- *      Author: ori
+ *
  */
 
 #ifndef FEATURES_NODEPAGERANKFEATURECALCULATOR_H_

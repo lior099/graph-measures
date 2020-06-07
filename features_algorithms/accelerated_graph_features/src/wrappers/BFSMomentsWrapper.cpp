@@ -2,7 +2,7 @@
  * BFSMomentsWrapper.cpp
  *
  *  Created on: Nov 12, 2018
- *      Author: ori
+ *
  */
 
 #include "BFSMomentsWrapper.h"

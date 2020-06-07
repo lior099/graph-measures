@@ -2,7 +2,7 @@
  * MotifWrapper.h
  *
  *  Created on: Dec 2, 2018
- *      Author: ori
+ *
  */
 
 #ifndef WRAPPERS_MOTIFWRAPPER_H_

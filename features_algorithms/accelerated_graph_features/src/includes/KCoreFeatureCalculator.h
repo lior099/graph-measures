@@ -2,7 +2,7 @@
  * KCoreFeatureCalculator.h
  *
  *  Created on: Nov 12, 2018
- *      Author: ori
+ *
  */
 
 #ifndef FEATURES_KCOREFEATURECALCULATOR_H_

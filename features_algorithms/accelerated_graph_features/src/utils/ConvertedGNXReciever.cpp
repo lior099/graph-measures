@@ -2,7 +2,7 @@
  * ConvertedGNXReciever.cpp
  *
  *  Created on: Oct 28, 2018
- *      Author: ori
+ *
  */
 
 #include "../includes/ConvertedGNXReciever.h"

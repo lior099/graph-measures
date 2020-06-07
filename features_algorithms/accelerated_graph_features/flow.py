@@ -13,7 +13,6 @@ from features_algorithms.accelerated_graph_features.src import flow
 
 
 class FlowCalculator(NodeFeatureCalculator):
-    """See Y. Rozen & Y. Louzoun article <add-link>"""
 
     def __init__(self, *args, threshold=0, **kwargs):
         super(FlowCalculator, self).__init__(*args, **kwargs)

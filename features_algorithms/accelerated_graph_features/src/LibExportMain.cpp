@@ -2,7 +2,7 @@
  * LibExportMain.cpp
  *
  *  Created on: Nov 11, 2018
- *      Author: ori
+ *
  */
 
 #include <stdio.h>

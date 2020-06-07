@@ -6,7 +6,6 @@ from features_infra.feature_calculators import NodeFeatureCalculator, FeatureMet
 
 
 class FlowCalculator(NodeFeatureCalculator):
-    """See Y. Rozen & Y. Louzoun article <add-link>"""
 
     def __init__(self, *args, threshold=0, **kwargs):
         super(FlowCalculator, self).__init__(*args, **kwargs)

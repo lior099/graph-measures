@@ -2,7 +2,7 @@
  * NodePageRankWrapper.h
  *
  *  Created on: Nov 12, 2018
- *      Author: ori
+ *
  */
 
 #ifndef WRAPPERS_NODEPAGERANKWRAPPER_H_

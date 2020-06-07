@@ -2,7 +2,7 @@
  * AttractionBasinWrapper.h
  *
  *  Created on: Jan 15, 2019
- *      Author: cohen
+ *
  */
 
 #ifndef SRC_WRAPPERS_ATTRACTIONBASINWRAPPER_H_

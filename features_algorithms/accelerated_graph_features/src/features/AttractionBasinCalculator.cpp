@@ -2,7 +2,7 @@
  * AttractionBasinCalculator.cpp
  *
  *  Created on: Jan 14, 2019
- *      Author: ori
+ *
  */
 
 #include "../includes/AttractionBasinCalculator.h"

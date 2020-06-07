@@ -2,7 +2,7 @@
  * WrapperIncludes.h
  *
  *  Created on: Nov 12, 2018
- *      Author: ori
+ *
  */
 
 #ifndef WRAPPERS_WRAPPERINCLUDES_H_

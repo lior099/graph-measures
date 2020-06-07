@@ -66,7 +66,7 @@ class FeatureCalculator:
         self._graph = nx.read_edgelist(edge_path, delimiter=',', create_using=nx.DiGraph() if directed else nx.Graph())
         vertices = np.array(self._graph.nodes)
         should_be_vertices = np.arange(len(vertices))
-		self._mapping = {i: v for i, v in enumerate(self._graph)}
+        self._mapping = {i: v for i, v in enumerate(self._graph)}
         if not np.array_equal(vertices, should_be_vertices):
             if self._verbose:
                 self._logger.debug("Relabeling vertices to [0, 1, ..., n-1]")            

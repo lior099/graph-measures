@@ -2,7 +2,7 @@
  * MotifUtils.h
  *
  *  Created on: Dec 2, 2018
- *      Author: ori
+ *
  */
 
 #ifndef INCLUDES_MOTIFUTILS_H_

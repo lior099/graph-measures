@@ -2,7 +2,7 @@
  * CacheGraph.h
  *
  *  Created on: Oct 28, 2018
- *      Author: ori
+ *
  */
 
 #ifndef CACHEGRAPH_H_
@@ -21,7 +21,6 @@
 #include <algorithm>
 
 /*
- This class is based on the code from Lev's lab.
  The class encapsulates a graph that is saved in memory with two lists:
  1) An ordered adjacency list of all nodes
  2) A list of offsets that saves the index of the beginning of every node's section

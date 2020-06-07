@@ -2,7 +2,7 @@
  * AttractionBasinWrapper.cpp
  *
  *  Created on: Jan 15, 2019
- *      Author: cohen
+ *
  */
 
 #include "FlowWrapper.h"

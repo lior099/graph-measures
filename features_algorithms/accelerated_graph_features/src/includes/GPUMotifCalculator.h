@@ -2,7 +2,7 @@
  * MotifCalculator.h
  *
  *  Created on: Dec 2, 2018
- *      Author: ori
+ *
  */
 
 #ifndef FEATURES_GPUMOTIFCALCULATOR_H_

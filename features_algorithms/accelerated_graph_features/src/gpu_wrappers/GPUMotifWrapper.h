@@ -2,7 +2,7 @@
  * ExampleWrapper.h
  *
  *  Created on: Nov 11, 2018
- *      Author: ori
+ *
  */
 
 #ifndef WRAPPERS_GPU_MOTIF_WRAPPER_H_

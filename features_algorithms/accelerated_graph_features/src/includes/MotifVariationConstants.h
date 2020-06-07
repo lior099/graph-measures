@@ -2,7 +2,7 @@
  * MotifVariationConstants.h
  *
  *  Created on: Dec 16, 2018
- *      Author: ori
+ *
  */
 
 #ifndef INCLUDES_MOTIFVARIATIONCONSTANTS_H_
