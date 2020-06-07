@@ -6,6 +6,11 @@ Topological feature calculators infrastructure.
 **NEW (07.05.20): An updated motif calculation algorithm lowers the GPU memory usage.**
 
 For installation and running instructions for the C++ code, refer to the [manual](features_algorithms/accelerated_graph_features/Cache%20Accelerated%20Graph%20Features%20Manual.pdf).
+In short, for the GPU accelerated version using conda:
+1. Move into the path "features_algorithms/accelerated_graph_features/src". 
+2. Create the environment that has the requirements: _"conda env create -f env.yml"_ 
+3. Activate the new environment: _"conda activate boost"_. Then, make the GPU files: _"make -f Makefile-gpu"_.
+4. Now, the accelerated graph features (including the GPU motifs) can be used.
 
 ## Calculating Features
 
