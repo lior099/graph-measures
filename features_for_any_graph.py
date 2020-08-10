@@ -1,20 +1,9 @@
 import datetime
 import networkx as nx
 import numpy as np
-import os
 import pickle
-import sys
-import torch
 import logging
-
-sys.path.append(os.path.join(os.path.dirname(__file__)))
-sys.path.append(os.path.join(os.path.dirname(__file__), 'features_algorithms'))
-sys.path.append(os.path.join(os.path.dirname(__file__), 'features_algorithms', 'accelerated_graph_features'))
-sys.path.append(os.path.join(os.path.dirname(__file__), 'features_algorithms', 'vertices'))
-sys.path.append(os.path.join(os.path.dirname(__file__), 'features_infra'))
-sys.path.append(os.path.join(os.path.dirname(__file__), 'graph_infra'))
-sys.path.append(os.path.join(os.path.dirname(__file__), 'features_processor'))
-sys.path.append(os.path.join(os.path.dirname(__file__), 'features_meta'))
+import __init__
 from loggers import PrintLogger, FileLogger, multi_logger
 from graph_features import GraphFeatures
 
@@ -23,6 +12,8 @@ class FeatureCalculator:
     def __init__(self, edge_path, dir_path, features, acc=True, directed=False, gpu=False, device=2, verbose=True,
                  params=None):
         """
+        A class used to calculate features for a given graph, input as a text-like file.
+
         :param edge_path: str
         Path to graph edges file (text-like file, e.g. txt or csv), from which the graph is built using networkx.
         The graph must be unweighted. If its vertices are not [0, 1, ..., n-1], they are mapped to become
@@ -53,7 +44,9 @@ class FeatureCalculator:
         self._gpu = gpu
         self._device = device
         self._verbose = verbose
-        self._logger = multi_logger([PrintLogger("Logger", level=logging.DEBUG), FileLogger("FLogger", path=dir_path, level=logging.INFO)], name=None) if verbose else None
+        self._logger = multi_logger([PrintLogger("Logger", level=logging.DEBUG),
+                                     FileLogger("FLogger", path=dir_path, level=logging.INFO)], name=None) \
+            if verbose else None
         self._params = params
         self._load_graph(edge_path, directed)
         self._get_feature_meta(features, acc)  # acc determines whether to use the accelerated features
