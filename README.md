@@ -13,31 +13,36 @@ The set of all vertex features implemented in graph-measures is the following.
 The features that have an accelerated version are written in bold:
 * Average neighbor degree
 * General (i.e. degree if undirected, else or (in-degree, out-degree))
-* Louvain (i.e. implement Louvain community detection method, then associate to each vertex the number of vertices in its community)
+* Louvain (i.e. implement Louvain community detection method, then associate to each vertex the number of vertices 
+in its community)
 * Hierarchy energy
 * **Motifs**
 * **K core**
-* **Attraction basin** (see [this](https://journals.aps.org/pre/pdf/10.1103/PhysRevE.76.016106) for more information)
+* **Attraction basin** 
 * **Page Rank**
 * Fiedler vector
 * Closeness centrality
 * Eccentricity
 * Load centrality
 * **BFS moments**
-* **Flow** (see [this](https://www.sciencedirect.com/science/article/pii/S0378437114000090) for more information)
+* **Flow** 
 * Betweenness centrality
 * Communicability betweenness centrality
 
 Aside from those, there are some other [edge features](features_algorithms/edges).
-Some more information regarding the features can be found in the files of [features_meta](features_meta). 
+Some more information regarding the features can be found in the files of [features_meta](features_meta).
+
+**NOTE:** For codes relating the motifs and their calculations, one might need to create the motif variation pickle files
+in _features_algorithms/motif_variations_. To do so, one needs to run [isomorphic.py](features_algorithms/motif_variations/isomorphic.py). 
+   
  
 ## Calculating Features
 
 There are two main methods to calculate features:
-1. Using _features_for_any_graph.py_ - A file for calculating any requested features on a given graph.
+1. Using [features_for_any_graph.py](features_for_any_graph.py) - A file for calculating any requested features on a given graph.
 The class for calculating features in this file is _FeatureCalculator_. \
 The graph is input to this file as a text-like file of edges, with a comma delimiter. 
-For example, the graph _example_graph.txt_, which is is _measure_tests_ file, is the following file: 
+For example, the graph [example_graph.txt](measure_tests/example_graph.txt) is the following file: 
     ```
     0,1
     0,2
@@ -55,7 +60,7 @@ For example, the graph _example_graph.txt_, which is is _measure_tests_ file, is
    ftr_calc = FeatureCalculator(path, head, feats, acc=True, directed=False, gpu=True, device=0, verbose=True)
    ftr_calc.calculate_features()
     ``` 
-    More information can be found in _features_for_any_graph.py_ file.
+    More information can be found in [features_for_any_graph.py](features_for_any_graph.py).
 2. By the calculations as below:
 The calculations require an input graph in NetworkX format, later referred as gnx, and a logger.
 For this example, we build a gnx and define a logger:
@@ -106,10 +111,12 @@ For this example, we build a gnx and define a logger:
 
 ## How to use accelerated features?
 The accelerated feature calculation option requires some prior work, since its files are C++ files which require making.
-The complete manual can be found [here](features_algorithms/accelerated_graph_features/Cache%20Accelerated%20Graph%20Features%20Manual.pdf). 
+The complete manual can be found [here](features_algorithms/accelerated_graph_features/manual). 
 
-In short, for the GPU accelerated version using conda:
-1. Move into the path "features_algorithms/accelerated_graph_features/src". 
+In short, for the GPU accelerated version using existing anaconda 3:
+* In case of problems with pickle files (e.g. inability to download), one can use the following [file](features_algorithms/motif_variations/rewrite_variations.py)
+to recreate the motif variation pickle files.
+1. Move into the path _features_algorithms/accelerated_graph_features/src_. 
 2. Create the conda environment required in which the work will be done: _"conda env create -f env.yml"_ 
 3. Activate the new environment: _"conda activate boost"_. \
 Then, make the files required for accelerated graph measures including motifs on GPU: \
@@ -118,5 +125,5 @@ _"make -f Makefile-gpu"_ (this might take a while).
 
 
 ## VDMC Results directory
-The directory called _vdmc_results_ includes results used for plotting some figures in the VDMC paper. 
-The code files for receiving these results are located there, as well as the results files.    
+The directory called _vdmc_results_ includes results used for plotting some figures in the VDMC paper.
+The code files for receiving these results are located there, as well as the results files.

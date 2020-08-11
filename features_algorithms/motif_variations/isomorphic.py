@@ -67,7 +67,7 @@ def main(level, is_directed):
     print("Calculating ", fname)
     gs = IsomorphismGenerator(level, is_directed)
     # Json dump integers to strings (JavaScript compatibility), other option - to dump
-    json.dump(list(gs.num_2_motif().items()), open(fname + ".json", "w"))
+    # json.dump(list(gs.num_2_motif().items()), open(fname + ".json", "w"))
     pickle.dump(gs.num_2_motif(), open(fname + ".pkl", "wb"))
     print("Finished calculating ", fname)
     # for y in gs.values():
@@ -79,6 +79,3 @@ if __name__ == "__main__":
     main(3, True)
     main(4, False)
     main(4, True)
-    # main(5, False)
-    # main(5, True)
-    print("Bla")
