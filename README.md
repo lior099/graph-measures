@@ -111,7 +111,7 @@ For this example, we build a gnx and define a logger:
 
 ## How to use accelerated features?
 The accelerated feature calculation option requires some prior work, since its files are C++ files which require making.
-The complete manual can be found [here](features_algorithms/accelerated_graph_features/manual). 
+The complete manual can be found [here](https://drive.google.com/file/d/1SMGWsGpiegR1ZkA2zffyAJO4HNhM53dD/view?usp=sharing). 
 
 In short, for the GPU accelerated version using existing anaconda 3:
 * In case of problems with pickle files (e.g. inability to download), one can use the following [file](features_algorithms/motif_variations/rewrite_variations.py)
