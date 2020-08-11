@@ -1,11 +1,4 @@
-import os
-import sys
-
-sys.path.append(os.path.abspath('..'))
-sys.path.append(os.path.abspath('../..'))
-sys.path.append(os.path.abspath('../../..'))
-sys.path.append(os.path.abspath('../../../..'))
-sys.path.append(os.path.abspath('../../../../..'))
+from __init__ import *
 import matplotlib.pyplot as plt
 import numpy as np
 from src.accelerated_graph_features.utils.data_reader import get_number_data
@@ -42,8 +35,7 @@ def plot_gpu_benchmark_comparison(feature_name):
     plt.xticks(X, runs, rotation=90)
     plt.legend((cpp_feature_bar[0], gpu_feature_bar[0]),
                ('C++ Feature', 'GPU Feature'))
-
-    plt.show()
+    plt.savefig(os.path.join("figures", f"gpu_{feature_name}_benchmark_comparison.png"))
 
 
 def plot_benchmark_comparison(feature_name):
@@ -80,6 +72,7 @@ def plot_benchmark_comparison(feature_name):
     plt.xticks(X, runs, rotation=90)
     plt.legend((cpp_conversion_bar[0], cpp_feature_bar[0], python_feature_bar[0]),
                ('C++ Conversion', 'C++ Feature', 'Python Feature'))
+    plt.savefig(os.path.join("figures", f"{feature_name}_benchmark_comparison.png"))
 
     # Plot difference line plot
     plt.figure(2)
@@ -92,8 +85,7 @@ def plot_benchmark_comparison(feature_name):
     plt.ylabel('Time')
     plt.title('Feature Time Difference for ' + feature_name.capitalize())
     plt.legend()
-
-    plt.show()
+    plt.savefig(os.path.join("figures", f"{feature_name}_time_difference.png"))
 
 
 if __name__ == '__main__':

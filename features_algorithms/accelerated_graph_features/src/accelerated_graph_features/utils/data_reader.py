@@ -1,5 +1,6 @@
 import csv
 
+
 def __get_data_from_file(file_path, cast_to_float=False):
     from collections import OrderedDict
     """
