@@ -1,3 +1,4 @@
+from __init__ import *
 from features_algorithms.vertices.attractor_basin import AttractorBasinCalculator
 from features_algorithms.vertices.average_neighbor_degree import AverageNeighborDegreeCalculator
 from features_algorithms.vertices.betweenness_centrality import BetweennessCentralityCalculator
@@ -15,7 +16,7 @@ from features_algorithms.vertices.load_centrality import LoadCentralityCalculato
 from features_algorithms.vertices.louvain import LouvainCalculator
 from features_algorithms.vertices.motifs import nth_edges_motif
 from features_algorithms.vertices.page_rank import PageRankCalculator
-from measure_tests.specific_feature_test import test_specific_feature
+from specific_feature_test import test_specific_feature
 
 
 FEATURE_CLASSES = [

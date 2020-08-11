@@ -1,35 +1,20 @@
-import os
-import sys
-
-sys.path.append(os.path.abspath('.'))
-sys.path.append(os.path.abspath('..'))
-sys.path.append(os.path.abspath('../..'))
-
+from __init__ import *
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
 import networkx as nx
 from loggers import PrintLogger
-import numpy as np
 from features_algorithms.vertices.motifs import MotifsNodeCalculator
-import matplotlib.pyplot as plt
 
 logger = PrintLogger("MyLogger")
 
-PREFIX = 'specific_graphs'
-
 
 def load_graph(path):
-    g: nx.Graph = nx.read_gpickle(open(os.path.join(PREFIX, path), 'rb'))
-    center_node = 0
-    # nodes = [center_node]
-    # for i in range(3):
-    #     addition = []
-    #     for n in nodes:
-    #         addition += list(g.neighbors(n))
-    #     nodes += addition
-    #
-    # nodes = list(set(nodes))
-    nodes = g.nodes
-
-    # return nx.subgraph(g, nodes)
+    if path.endswith(".pkl"):
+        g: nx.Graph = nx.read_gpickle(open(path, 'rb'))
+    else:
+        df = pd.read_csv(path)
+        g: nx.Graph = nx.from_pandas_edgelist(df, source='n1', target='n2')
     return g
 
 
@@ -48,16 +33,13 @@ def draw_graph(gnx: nx.Graph):
 
 
 def main():
-    path = 'undirected_test.pickle'
-    # path = 'n_50_p_0.5_size_0'
+    path = 'test_undirected'
     g = load_graph(path)
-    # draw_graph(g)
     feature = MotifsNodeCalculator(g, level=4, logger=logger)
     feature.build()
 
     mx = feature.to_matrix(mtype=np.matrix, should_zscore=False)
     print(mx)
-    pass
 
 
 if __name__ == '__main__':
