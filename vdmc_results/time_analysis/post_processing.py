@@ -10,12 +10,12 @@ def aggregate_results():
         os.mkdir("results")
     for size, degree, is_directed in itertools.product(SIZES, AVG_DEG, DIRECTED):
         dirname = f"size{size}_deg{degree}_directed{is_directed}_runs"
-        times_elapsed = {"motif3_python": [], "motif4_python": [],
-                         "motif3_cpp": [], "motif4_cpp": [],
+        times_elapsed = {#"motif3_python": [], "motif4_python": [],
+                         #"motif3_cpp": [], "motif4_cpp": [],
                          "motif3_gpu": [], "motif4_gpu": []}
         for run in range(NUM_RUNS):
             dir_path = os.path.join(dirname, "run_%d" % run)
-            for level, mode in itertools.product([3, 4], ["python", "cpp", "gpu"]):
+            for level, mode in itertools.product([3, 4],["gpu"]): #["python", "cpp", "gpu"]):
                 if all([size == 10000, degree == 100, level == 4, mode == "python"]):
                     times_elapsed[f"motif{level}_{mode}"].append(float('nan'))  # Too long calculations
                     continue

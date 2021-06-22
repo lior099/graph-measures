@@ -24,7 +24,7 @@ def aggregate_results():
             res_df = pd.DataFrame(res_to_matrix(
                 pickle.load(open(os.path.join(dirname, f"run_{run}", "motifs_gpu", f"motif{level}.pkl"), "rb"))))
             if not os.path.exists(os.path.join(dump_dirname, f"run_{run}")):
-                os.path.join(dump_dirname, f"run_{run}")
+                os.mkdir(os.path.join(dump_dirname, f"run_{run}"))
             res_df.to_csv(os.path.join(dump_dirname, f"run_{run}", "motifs.csv"), header=None, index=None)
 
 
