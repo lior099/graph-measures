@@ -210,7 +210,9 @@ if __name__ == "__main__":
     #            "closeness_centrality", "communicability_betweenness_centrality",
     #            "eccentricity", "fiedler_vector", "k_core", "load_centrality",
     #            "louvain", "motif3", "motif4", "degree", "additional_features",
-    #            "eigenvector_centrality","clustering_coefficient","square_clustering_coefficient"]
+    #            "eigenvector_centrality","clustering_coefficient",
+    #            "square_clustering_coefficient","generalized_degree",
+    #            "all_pairs_shortest_path_length","all_pairs_shortest_path"]
     feats = ["louvain", "eigenvector_centrality", "clustering_coefficient"]
     ftr_calc = FeatureCalculator("example_graph.edgelist", "./try", feats, acc=True, directed=True, gpu=True, device=0,
                                  verbose=True)

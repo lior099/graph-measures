@@ -4,9 +4,8 @@ from features_infra.feature_calculators import NodeFeatureCalculator, FeatureMet
 
 
 class EigenvectorCentralityCalculator(NodeFeatureCalculator):
-    def __init__(self, *args, normalized=False, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(EigenvectorCentralityCalculator, self).__init__(*args, **kwargs)
-        self._is_normalized = normalized
 
     def _calculate(self, include: set):
         self._features = nx.eigenvector_centrality(self._gnx)
@@ -19,7 +18,7 @@ feature_entry = {
     "eigenvector_centrality": FeatureMeta(EigenvectorCentralityCalculator, {"eigenvector"}),
 }
 
-
 if __name__ == "__main__":
     from measure_tests.specific_feature_test import test_specific_feature
+
     test_specific_feature(EigenvectorCentralityCalculator, is_max_connected=True)

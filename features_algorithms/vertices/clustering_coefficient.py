@@ -8,7 +8,7 @@ class ClusteringCoefficientCalculator(NodeFeatureCalculator):
         super(ClusteringCoefficientCalculator, self).__init__(*args, **kwargs)
 
     def _calculate(self, include: set):
-        self._features = nx.networkx.algorithms.cluster.clustering(self._gnx)
+        self._features = nx.algorithms.cluster.clustering(self._gnx)
 
     def is_relevant(self):
         return True

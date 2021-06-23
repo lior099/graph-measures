@@ -31,6 +31,9 @@ in its community)
 * Eigenvector centrality
 * Clustering coefficient
 * Square clustering coefficient
+* Generalized degree
+* All pairs shortest path length
+* All pairs shortest path
 
 Aside from those, there are some other [edge features](features_algorithms/edges).
 Some more information regarding the features can be found in the files of [features_meta](features_meta).

@@ -21,7 +21,10 @@ from features_infra.feature_calculators import FeatureMeta, FeatureCalculator
 # new
 from features_algorithms.vertices.eigenvector_centrality import EigenvectorCentralityCalculator
 from features_algorithms.vertices.clustering_coefficient import ClusteringCoefficientCalculator
-from features_algorithms.vertices.square_clustering_coefficient import Square_ClusteringCoefficientCalculator
+from features_algorithms.vertices.square_clustering_coefficient import SquareClusteringCoefficientCalculator
+from features_algorithms.vertices.generalized_degree import GeneralizedDegreeCalculator
+from features_algorithms.vertices.all_pairs_shortest_path_length import AllPairsShortestPathLengthCalculator
+from features_algorithms.vertices.all_pairs_shortest_path import AllPairsShortestPathCalculator
 
 
 class FeaturesMeta:
@@ -57,7 +60,11 @@ class FeaturesMeta:
             # new
             "eigenvector_centrality": FeatureMeta(EigenvectorCentralityCalculator, {"eigenvector"}),
             "clustering_coefficient": FeatureMeta(ClusteringCoefficientCalculator, {"clustering"}),
-            "square_clustering_coefficient": FeatureMeta(Square_ClusteringCoefficientCalculator, {"square_clustering"}),
+            "square_clustering_coefficient": FeatureMeta(SquareClusteringCoefficientCalculator, {"square_clustering"}),
+            "generalized_degree": FeatureMeta(GeneralizedDegreeCalculator, {"generalized_degree"}),
+            "all_pairs_shortest_path_length": FeatureMeta(AllPairsShortestPathLengthCalculator,
+                                                          {"all_pairs_shortest_path_length"}),
+            "all_pairs_shortest_path": FeatureMeta(AllPairsShortestPathCalculator, {"all_pairs_shortest_path"}),
         }
 
         self.MOTIFS = {
