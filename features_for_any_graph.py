@@ -203,131 +203,25 @@ class OtherFeatures:
 
 
 if __name__ == "__main__":
-    caida = ["web graphs 2/as-caida20071105 undirected/as-caida20071105.edgelist",
-             "web graphs 2/as-caida20071105 undirected/results", False]
-    skitter = ["web graphs 2/as-Skitter undirected/as-skitter.edgelist", "web graphs 2/as-Skitter undirected/results",
-               False]
-    orkut = ["web graphs 2/com-Orkut undirected/com-orkut.edgelist", "web graphs 2/com-Orkut undirected/results", False]
-    facebook = ["web graphs 2/facebook-wosn-links undirected/facebook-wosn-links.edgelist",
-                "web graphs 2/facebook-wosn-links undirected/results", False]
-    reactome = ["web graphs 2/reactome undirected/reactome.edgelist", "web graphs 2/reactome undirected/results", False]
-    journal = ["web graphs 2/soc-LiveJournal directed/soc-LiveJournal1.edgelist",
-               "web graphs 2/soc-LiveJournal directed/results", True]
-    journal_undirected = ["web graphs 2/soc-LiveJournal undirected/soc-LiveJournal1.edgelist",
-                          "web graphs 2/soc-LiveJournal undirected/results", False]
-    topology = ["web graphs 2/topology undirected/topology.edgelist", "web graphs 2/topology undirected/results", False]
-    web_berkstan = ["web graphs 2/web-BerkStan directed/web-BerkStan_directed.edgelist",
-                    "web graphs 2/web-BerkStan directed/results", True]
-    web_berkstan_undirected = ["web graphs 2/web-BerkStan undirected/web-BerkStan_directed.edgelist",
-                               "web graphs 2/web-BerkStan undirected/results", False]
-    # graphs = [caida, skitter, orkut, facebook, reactome, journal, journal_undirected, topology, web_berkstan,
-    #           web_berkstan_undirected]
-    # graphs = [journal, journal_undirected, topology, web_berkstan, web_berkstan_undirected]
-    # graphs = [web_berkstan, web_berkstan_undirected]
-    # graphs = [journal, topology, web_berkstan]
-    feats = ["motif3", "motif4"]
-    # for graph in graphs:
-    #     print("start " + graph[0])
-    #     ftr_calc = FeatureCalculator(graph[0], graph[1], feats, acc=True, directed=graph[2],
-    #                                  gpu=True, device=0, verbose=True)
-    #     ftr_calc.calculate_features()
     # head = 'path/to/dir_path'
     # path = 'path/to/edges_file'
     # all possible features:
     #           ["average_neighbor_degree", "betweenness_centrality", "bfs_moments",
     #            "closeness_centrality", "communicability_betweenness_centrality",
     #            "eccentricity", "fiedler_vector", "k_core", "load_centrality",
-    #            "louvain", "motif3", "motif4", "degree", "additional_features"]
-    # feats = ["motif3", "motif4"]
-
-    # feats = ["motif4"]
-    ftr_calc = FeatureCalculator("exapmle_graph.edgelist", "./try", feats, acc=True, directed=True, gpu=True, device=0, verbose=True)
-    # ftr_calc = FeatureCalculator("graph_directed/graph4.edgelist", "./graph_directed", feats, acc=True, directed=True,
-    #                              gpu=True, device=0,
-    #                              verbose=True)
-    # ftr_calc = FeatureCalculator("size100deg3undirectedrun0.edgelist", "./try10", feats, acc=True, directed=False, gpu=True,
-    #                              device=0, verbose=True)
-    # ftr_calc = FeatureCalculator("100deg100undirectedrun0.edgelist", "./try_directed", feats, acc=True, directed=False, gpu=True,
-    #                              device=0, verbose=True)
-    # ftr_calc = FeatureCalculator("directed_cycle.edgelist", "./try_directed", feats, acc=True, directed=True, gpu=True,
-    #                              device=1, verbose=True)
-    # ftr_calc = FeatureCalculator("size10000_deg100_directedFalse.edgelist", "./try", feats, acc=True, directed=False,
-    #                              gpu=True,
-    #                              device=0, verbose=True)
-    # ftr_calc = FeatureCalculator("size10000_deg100_directedTrue.edgelist", "./try12", feats, acc=True, directed=True,
-    #                              gpu=True, device=0, verbose=True)
-    # ftr_calc = FeatureCalculator("as-skitter.edgelist", "./try_new_grid_size", feats, acc=True, directed=False,
-    #                              gpu=True, device=0,
-    #                              verbose=True)
-    # ftr_calc = FeatureCalculator("web graphs/web-BerkStan directed/web-BerkStan_directed.edgelist",
-    #                              "./web graphs/web-BerkStan directed/results", feats, acc=True, directed=True,
-    #                              gpu=True, device=0, verbose=True)
-    # ftr_calc = FeatureCalculator("uk-2002 directed/uk.edgelist", "uk-2002 directed/results", feats, acc=True,
-    #                              directed=True, gpu=True, device=0, verbose=True)
+    #            "louvain", "motif3", "motif4", "degree", "additional_features",
+    #            "eigenvector_centrality","clustering_coefficient","square_clustering_coefficient"]
+    feats = ["louvain", "eigenvector_centrality", "clustering_coefficient"]
+    ftr_calc = FeatureCalculator("example_graph.edgelist", "./try", feats, acc=True, directed=True, gpu=True, device=0,
+                                 verbose=True)
     ftr_calc.calculate_features()
-
-    # with open("vdmc_results/time_analysis/size100_deg100_directedFalse_runs/run_0/motifs_gpu/motif4.pkl", 'rb') as f:
-    # aa = pickle.load(f)
-
-    # with open("vdmc_results/time_analysis/size100_deg100_directedTrue_runs/run_0/motifs_cpp/motif4.pkl", 'rb') as f:
-    #     aa = pickle.load(f)
-
-    # with open("vdmc_results/time_analysis/size100_deg3_directedFalse_runs/run_0/motifs_gpu/motif4.pkl", 'rb') as f:
-    #     real = pickle.load(f)
-
-    # with open("vdmc_results/time_analysis/size10000_deg100_directedTrue_runs/run_0/gnx.pkl", 'rb') as f:
-    #     aa = pickle.load(f)
-    #     edges=aa.edges
-    #     textfile = open("size10000_deg100_directedTrue.edgelist", "w")
-    #     for element in edges:
-    #         textfile.write(str(element[0])+","+str(element[1]) + "\n")
-    #     textfile.close()
-
-    # import gzip
-    # import shutil
-    # with gzip.open('web graphs/com-Orkut undirected/com-orkut.ungraph.txt.gz', 'rb') as f_in:
-    #     with open('web graphs/com-Orkut undirected/com-orkut.ungraph.txt', 'wb') as f_out:
-    #         shutil.copyfileobj(f_in, f_out)
-
-    # import tarfile
-    #
-    # tar = tarfile.open("web graphs/topology.tar.bz2", "r:bz2")
-    # tar.extractall("web graphs/")
-    # tar.close()
-    #
-    # with open('web graphs/reactome/out.reactome', 'r') as fin:
-    #     data = fin.read().splitlines(True)
-    # with open('web graphs/reactome/out.reactome', 'w') as fout:
-    #     fout.writelines(data[1:])
-    # import fileinput
-
-    # with fileinput.FileInput('web graphs/reactome/out.reactome', inplace=True, backup='.bak') as file:
-    #     for line in file:
-    #         print(line.replace('	', ','), end='')
-    #         print(line.replace(' ', ','), end='')
-    # with gzip.open('as-skitter.txt.gz', 'rt') as f:
-    #     a=1
-    #     for line in f:
-    #         print(line)
-    #         a+=1
-    #         if a>100:
-    #             break
-
-    # with open("vdmc_results/time_analysis/size100_deg100_directedTrue_runs/run_0/motifs_gpu/motif3.pkl", 'rb') as f:
-    #     real3 = pickle.load(f)
-
-    # with open("vdmc_results/time_analysis/size100_deg100_directedTrue_runs/run_0/motifs_gpu/motif4.pkl", 'rb') as f:
-    #     real4 = pickle.load(f)
-
-    # with open("vdmc_results/time_analysis/size10000_deg100_directedTrue_runs/run_0/motifs_gpu/motif4.pkl", 'rb') as f:
-    #     real4 = pickle.load(f)
-    # with open("vdmc_results/time_analysis/size10000_deg100_directedTrue_runs/run_0/motifs_gpu/motif3.pkl", 'rb') as f:
-    #     real3 = pickle.load(f)
 
     with open("./try/gnx.pkl", 'rb') as f:
         graph = pickle.load(f)
-    with open("./try/motif3.pkl", 'rb') as f:
+    with open("./try/eigenvector_centrality.pkl", 'rb') as f:
         aa = pickle.load(f)
-    with open("./try/motif4.pkl", 'rb') as f:
+    with open("./try/louvain.pkl", 'rb') as f:
         a = pickle.load(f)
+    with open("./try/clustering_coefficient.pkl", 'rb') as f:
+        clustering = pickle.load(f)
     b = 3

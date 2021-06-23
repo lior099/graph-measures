@@ -28,6 +28,9 @@ in its community)
 * **Flow** 
 * Betweenness centrality
 * Communicability betweenness centrality
+* Eigenvector centrality
+* Clustering coefficient
+* Square clustering coefficient
 
 Aside from those, there are some other [edge features](features_algorithms/edges).
 Some more information regarding the features can be found in the files of [features_meta](features_meta).
