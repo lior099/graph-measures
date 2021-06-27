@@ -134,9 +134,7 @@ _"make -f Makefile-gpu"_ (this might take a while).
 The directory called _vdmc_results_ includes results used for plotting some figures in the VDMC paper.
 The code files for receiving these results are located there, as well as the results files.
 
-## List-of-Lists Format
-
-Lior Shifman and Haim Isakov
+## List-of-Lists (CSR) Format
 
 Our format is aimed at increasing the efficiency of our code by leveraging
 the computer's internal cache mechanism. We call this structure a List Of Lists Graph.
