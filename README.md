@@ -184,3 +184,19 @@ Basically, you can use LolGraph class to create a directed graph, but some funct
 Therefore, use LolGraph for undirected graph, and DLGW for directed graph.
 
 The name of the implemented functions are the same as if you were using Networkx library.
+
+## Dockers - Optional
+The docker is designed to have all the things needed to run the code, including the boost environment and a proper Cuda version.
+The docker file may be found in [the dockers directory](dockers/).
+To use it:
+* Go to the dockers directory
+* Build:
+   ```
+   docker build -t <Enter any wanted name>:01 .
+   ```
+* Run:
+   ```
+   docker run -it --rm --gpus device=<The ordinal number of the gpu> -v <Path to graph-measures directory>:<Path to graph-measures directory> <The chosen name from the building>:01 bash
+   ```
+* Inside the docker, find the graph-measures directory and run the code :smiley:
+   
