@@ -188,7 +188,9 @@ The name of the implemented functions are the same as if you were using Networkx
 ## Dockers - Optional
 The docker is designed to have all the things needed to run the code, including the boost environment and a proper Cuda version.
 The docker file may be found in [the dockers directory](dockers/).
+
 Please note: It's needed to compile the code before using the docker.
+
 To use it:
 * Go to the dockers directory
 * Build:
