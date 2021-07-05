@@ -73,12 +73,12 @@ class FeatureCalculator:
     def _get_feature_meta(self, features, acc):
         if acc:
             from accelerated_features_meta import FeaturesMeta
-            features_meta_args = dict(gpu=self._gpu, device=self._device)
+            features_meta_kwargs = dict(gpu=self._gpu, device=self._device)
         else:
             from features_meta import FeaturesMeta
-            features_meta_args = dict()
+            features_meta_kwargs = dict()
 
-        all_node_features = FeaturesMeta(**features_meta_args).NODE_LEVEL
+        all_node_features = FeaturesMeta(**features_meta_kwargs).NODE_LEVEL
         self._features = {}
         self._special_features = []
         for key in features:
