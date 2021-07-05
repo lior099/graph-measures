@@ -4,11 +4,12 @@ from features_infra.feature_calculators import NodeFeatureCalculator, FeatureMet
 
 
 class EigenvectorCentralityCalculator(NodeFeatureCalculator):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, max_iter=1000, **kwargs):
         super(EigenvectorCentralityCalculator, self).__init__(*args, **kwargs)
+        self._max_iter = max_iter
 
     def _calculate(self, include: set):
-        self._features = nx.eigenvector_centrality(self._gnx)
+        self._features = nx.eigenvector_centrality(self._gnx, max_iter=self._max_iter)
 
     def is_relevant(self):
         return True
