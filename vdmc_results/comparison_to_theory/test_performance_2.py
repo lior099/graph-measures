@@ -16,7 +16,7 @@ def calculate_gpu_one(run, level, size, p, directed):
     from features_infra.feature_calculators import FeatureMeta
     from features_algorithms.accelerated_graph_features.motifs import nth_nodes_motif
     from loggers import FileLogger
-    feature_meta = {"motif" + str(level): FeatureMeta(nth_nodes_motif(level, gpu=True, device=2), {"m" + str(level)})}
+    feature_meta = {"motif" + str(level): FeatureMeta(nth_nodes_motif(level, gpu=True, device=3), {"m" + str(level)})}
     head_path = os.path.join("size{}_p{}_directed{}_runs".format(size, p, directed), "run_" + str(run))
     dump_path = os.path.join(head_path, "motifs_gpu")
     graph = pickle.load(open(os.path.join(head_path, "gnx.pkl"), "rb"))

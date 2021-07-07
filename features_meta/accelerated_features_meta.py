@@ -15,6 +15,13 @@ from general import GeneralCalculator
 from hierarchy_energy import HierarchyEnergyCalculator
 from load_centrality import LoadCentralityCalculator
 from louvain import LouvainCalculator
+# new
+from features_algorithms.vertices.eigenvector_centrality import EigenvectorCentralityCalculator
+from features_algorithms.vertices.clustering_coefficient import ClusteringCoefficientCalculator
+from features_algorithms.vertices.square_clustering_coefficient import SquareClusteringCoefficientCalculator
+from features_algorithms.vertices.generalized_degree import GeneralizedDegreeCalculator
+from features_algorithms.vertices.all_pairs_shortest_path_length import AllPairsShortestPathLengthCalculator
+from features_algorithms.vertices.all_pairs_shortest_path import AllPairsShortestPathCalculator
 
 
 class FeaturesMeta:
@@ -24,6 +31,7 @@ class FeaturesMeta:
     For each feature, the comment to the right describes to which graph they are intended.
     We split the features into 3 classes by duration, below.
     """
+
     def __init__(self, gpu=False, device=0):
         self.NODE_LEVEL = {
             "attractor_basin": FeatureMeta(AttractorBasinCalculator, {"ab"}),  # Directed
@@ -45,6 +53,14 @@ class FeaturesMeta:
             "motif3": FeatureMeta(nth_nodes_motif(3, gpu, device), {"m3"}),  # Any
             "page_rank": FeatureMeta(PageRankCalculator, {"pr"}),  # Directed (but works for any)
             "motif4": FeatureMeta(nth_nodes_motif(4, gpu, device), {"m4"}),  # Any
+            # new
+            "eigenvector_centrality": FeatureMeta(EigenvectorCentralityCalculator, {"eigenvector"}),
+            "clustering_coefficient": FeatureMeta(ClusteringCoefficientCalculator, {"clustering"}),
+            "square_clustering_coefficient": FeatureMeta(SquareClusteringCoefficientCalculator, {"square_clustering"}),
+            "generalized_degree": FeatureMeta(GeneralizedDegreeCalculator, {"generalized_degree"}),
+            "all_pairs_shortest_path_length": FeatureMeta(AllPairsShortestPathLengthCalculator,
+                                                          {"all_pairs_shortest_path_length"}),
+            "all_pairs_shortest_path": FeatureMeta(AllPairsShortestPathCalculator, {"all_pairs_shortest_path"}),
         }
 
         self.MOTIFS = {

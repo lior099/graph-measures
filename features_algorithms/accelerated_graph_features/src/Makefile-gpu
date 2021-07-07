@@ -2,8 +2,8 @@
  
 PYTHON_VERSION = 3.7m
 PYTHON_VERSION_SHORT = 37
-PYTHON_INCLUDE =$(CONDA_PREFIX)/../../include/python$(PYTHON_VERSION)
-PYTHON_LIB =$(CONDA_PREFIX)/../../lib/python3.7/config-3.7m-x86_64-linux-gnu-lpython$(PYTHON_VERSION)
+PYTHON_INCLUDE =$(CONDA_PREFIX)/include/python$(PYTHON_VERSION)
+PYTHON_LIB =$(CONDA_PREFIX)/lib/python3.7/config-3.7m-x86_64-linux-gnu-lpython$(PYTHON_VERSION)
 
 NV_PREFIX = /usr/local/cuda
 NVCC=$(NV_PREFIX)/bin/nvcc

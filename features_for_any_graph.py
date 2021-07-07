@@ -5,6 +5,7 @@ import pickle
 import logging
 import __init__
 from loggers import PrintLogger, FileLogger, multi_logger
+import os
 from graph_features import GraphFeatures
 
 
@@ -62,20 +63,22 @@ class FeatureCalculator:
         self._mapping = {i: v for i, v in enumerate(self._graph)}
         if not np.array_equal(vertices, should_be_vertices):
             if self._verbose:
-                self._logger.debug("Relabeling vertices to [0, 1, ..., n-1]")            
+                self._logger.debug("Relabeling vertices to [0, 1, ..., n-1]")
             pickle.dump(self._mapping, open(os.path.join(self._dir_path, "vertices_mapping.pkl"), "wb"))
             self._graph = nx.convert_node_labels_to_integers(self._graph)
         if self._verbose:
             self._logger.info(str(datetime.datetime.now()) + " , Loaded graph")
-            self._logger.debug("Graph Size: %d Nodes, %d Edges" % (len(self._graph), len(self._graph.edges))) 
+            self._logger.debug("Graph Size: %d Nodes, %d Edges" % (len(self._graph), len(self._graph.edges)))
 
     def _get_feature_meta(self, features, acc):
         if acc:
             from accelerated_features_meta import FeaturesMeta
+            features_meta_kwargs = dict(gpu=self._gpu, device=self._device)
         else:
             from features_meta import FeaturesMeta
+            features_meta_kwargs = dict()
 
-        all_node_features = FeaturesMeta(gpu=self._gpu, device=self._device).NODE_LEVEL
+        all_node_features = FeaturesMeta(**features_meta_kwargs).NODE_LEVEL
         self._features = {}
         self._special_features = []
         for key in features:
@@ -201,14 +204,28 @@ class OtherFeatures:
         return self._feature_matrix
 
 
-# if __name__ == "__main__":
-#     head = 'path/to/dir_path'
-#     path = 'path/to/edges_file'
-# # all possible features:
-# #           ["average_neighbor_degree", "betweenness_centrality", "bfs_moments",
-# #            "closeness_centrality", "communicability_betweenness_centrality",
-# #            "eccentricity", "fiedler_vector", "k_core", "load_centrality",
-# #            "louvain", "motif3", "motif4", "degree", "additional_features"]
-#     feats = [any, of, the, features, above]
-#     ftr_calc = FeatureCalculator(path, head, feats, acc=True, directed=False, gpu=True, device=0, verbose=True)    
-#     ftr_calc.calculate_features()
+if __name__ == "__main__":
+    # head = 'path/to/dir_path'
+    # path = 'path/to/edges_file'
+    # all possible features:
+    #           ["average_neighbor_degree", "betweenness_centrality", "bfs_moments",
+    #            "closeness_centrality", "communicability_betweenness_centrality",
+    #            "eccentricity", "fiedler_vector", "k_core", "load_centrality",
+    #            "louvain", "motif3", "motif4", "degree", "additional_features",
+    #            "eigenvector_centrality","clustering_coefficient",
+    #            "square_clustering_coefficient","generalized_degree",
+    #            "all_pairs_shortest_path_length","all_pairs_shortest_path"]
+    feats = ["louvain", "eigenvector_centrality", "clustering_coefficient"]
+    ftr_calc = FeatureCalculator("example_graph.edgelist", "./try", feats, acc=True, directed=True, gpu=True, device=0,
+                                 verbose=True)
+    ftr_calc.calculate_features()
+
+    with open("./try/gnx.pkl", 'rb') as f:
+        graph = pickle.load(f)
+    with open("./try/eigenvector_centrality.pkl", 'rb') as f:
+        aa = pickle.load(f)
+    with open("./try/louvain.pkl", 'rb') as f:
+        a = pickle.load(f)
+    with open("./try/clustering_coefficient.pkl", 'rb') as f:
+        clustering = pickle.load(f)
+    b = 3
