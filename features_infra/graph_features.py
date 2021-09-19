@@ -187,7 +187,11 @@ class GraphFeatures(dict):
         if entries_order is None:
             entries_order = sorted(self._gnx)
 
-        sorted_features = map(at(1), sorted(self.items(), key=at(0)))
+        # This will sort the features according to A-Z
+        # sorted_features = map(at(1), sorted(self.items(), key=at(0)))
+        # This will not sort the features
+        sorted_features = [at[1] for at in self.items()]
+
         # Consider caching the matrix creation (if it takes long time)
         sorted_features = [feature for feature in sorted_features if feature.is_relevant() and feature.is_loaded]
 

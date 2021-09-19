@@ -6,7 +6,7 @@ from itertools import chain
 import networkx as nx
 import numpy as np
 
-# from scipy.stats import zscore
+from scipy.stats import zscore
 
 try:
     from graph_measures.loggers import EmptyLogger
@@ -24,7 +24,7 @@ def z_scoring(matrix):
         elif minimum[0, i] == 0:
             new_matrix[:, i] = np.log10(new_matrix[:, i] + 0.1)
         if new_matrix[:, i].std() > 0:
-            new_matrix[:, i] = (new_matrix[:, i] - new_matrix[:, i].min()) / new_matrix[:, i].std()
+            new_matrix[:, i] = (new_matrix[:, i] - new_matrix[:, i].mean()) / new_matrix[:, i].std()
     return new_matrix
 
 
@@ -113,6 +113,7 @@ class FeatureCalculator:
             mx = mx.transpose()
         if should_zscore:
             mx = z_scoring(mx)  # , axis=0)
+            # mx = zscore(mx)  # , axis=0)
         return mtype(mx)
 
     def __repr__(self):
