@@ -6,10 +6,10 @@ sys.path.append(os.path.abspath('../..'))
 
 
 import networkx as nx
-from graph_measures.loggers import PrintLogger
+from graph-measures.loggers import PrintLogger
 from pprint import pprint
 
-from graph_measures.features_algorithms.vertices.motifs import MotifsNodeCalculator
+from graph-measures.features_algorithms.vertices.motifs import MotifsNodeCalculator
 
 logger = PrintLogger("Logger")
 

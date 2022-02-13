@@ -191,7 +191,6 @@ class GraphFeatures(dict):
         # sorted_features = map(at(1), sorted(self.items(), key=at(0)))
         # This will not sort the features:
         sorted_features = [at[1] for at in self.items()]
-
         # Consider caching the matrix creation (if it takes long time)
         sorted_features = [feature for feature in sorted_features if feature.is_relevant() and feature.is_loaded]
 

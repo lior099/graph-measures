@@ -113,23 +113,26 @@ private:
 	int64* m_Offsets;
 	double* m_Weights;
 	bool weighted, directed;
-
-	typedef struct {
-		unsigned int node;
-		unsigned int degree;
-	} NodeWithDegree;
-
-	/**
-	 * Returns true if the first argument is sorted before the second one.
-	 * In our case, we sort the nodes by ascending degree order, so we return true
-	 * iff the degree of the first argument is smaller than the second's.
-	 */
-	struct {
-		bool operator()(const NodeWithDegree& lhs, const NodeWithDegree& rhs) {
-			return lhs.degree < rhs.degree;
-		}
-	} cmpNodesByDegree;
 };
+
+typedef struct {
+    unsigned int node;
+    unsigned int degree;
+} NodeWithDegree;
+
+/**
+ * Returns true if the first argument is sorted before the second one.
+ * In our case, we sosort the nodes by ascending degree order, so we return true
+ * iff the degree of the first argument is smaller than the second's.
+ */
+struct {
+    bool operator()(const NodeWithDegree& lhs, const NodeWithDegree& rhs) {
+        return lhs.degree < rhs.degree;
+    }
+} cmpNodesByDegree;
+
+
+
 
 template<typename value_type> bool CacheGraph::SaveValueToFile(
 		const std::vector<value_type>& values, const std::string& FileName,

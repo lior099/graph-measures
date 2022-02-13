@@ -13,8 +13,8 @@ from src.accelerated_graph_features.feature_wrappers import clustering_coefficie
 from src.accelerated_graph_features.graph_timer import FeatureTimer
 from src.accelerated_graph_features.original_features_check import original_bfs_moments
 # from Git.graph_measures.cpp_comparison import compare_motifs
-from graph_measures.features_algorithms.vertices.attractor_basin import AttractorBasinCalculator
-from graph_measures.features_algorithms.vertices.flow import FlowCalculator
+from features_algorithms.vertices.attractor_basin import AttractorBasinCalculator
+from features_algorithms.vertices.flow import FlowCalculator
 import networkx as nx
 
 matching_python_functions = {
@@ -22,12 +22,12 @@ matching_python_functions = {
     # 'k_core': [k_core, nx.k_core],
     # 'page_rank': [node_page_rank, nx.pagerank]
     # 'BFSMoments': [bfs_moments, original_bfs_moments]
-    # 'Motif3': [lambda G,timer: motif(G, level=3,timer=timer), lambda G: compare_motifs(G, level=3)]
-    # 'Motif4': [lambda G,timer: motif(G, level=4,timer=timer), lambda G: compare_motifs(G, level=4)]
-    #	'Motif3_GPU': {'cpp':lambda G,timer: motif(G, level=3,timer=timer),'gpu':lambda G,timer: motif(G, level=3,timer=timer,gpu=True)},
-    #	'Motif4_GPU': {'cpp':lambda G,timer: motif(G, level=4,timer=timer),'gpu':lambda G,timer: motif(G, level=4,timer=timer,gpu=True)},
-    'attraction_basin': [attraction_basin, lambda G: AttractorBasinCalculator(G).build()],
-    'flow': [flow, lambda G: FlowCalculator(G).build()]
+    # 'Motif3': [lambda G,timer: motif(G, level=3,timer=timer), lambda G: motif(G, level=3)],
+    # 'Motif4': [lambda G,timer: motif(G, level=4,timer=timer), lambda G: motif(G, level=4)]
+    	'Motif3_GPU': {'cpp':lambda G,timer: motif(G, level=3,timer=timer),'gpu':lambda G,timer: motif(G, level=3,timer=timer,gpu=True)},
+    	'Motif4_GPU': {'cpp':lambda G,timer: motif(G, level=4,timer=timer),'gpu':lambda G,timer: motif(G, level=4,timer=timer,gpu=True)}
+    # 'attraction_basin': [attraction_basin, lambda G: AttractorBasinCalculator(G).build()],
+    # 'flow': [flow, lambda G: FlowCalculator(G).build()]
 
 }
 
@@ -43,11 +43,11 @@ def benchmark_gpu_feature_regular_graph(feature_name, type='cpp', d=20):
         titles = ['Conversion Time', 'Feature calculation time']
 
     feature_type = type
-    timer = FeatureTimer(feature_name + '_{}_benchmark'.format(feature_type),
+    timer = FeatureTimer(feature_name + '_{}_new_benchmark'.format(feature_type),
                          titles=titles)
 
     for n in nodes:
-        G = nx.random_regular_graph(d, n, seed=SEED, directed=True)
+        G = nx.random_regular_graph(d, n, seed=SEED) #, directed=True)
         run_id = '{}_nodes_and_{}_edges'.format(n, G.size())
         print(run_id)
         timer.start(run_id)
@@ -116,7 +116,7 @@ def benchmark_feature_erdos_renyi(feature_name, python=False, p=0.8):
 def run_all_feature_with_gpu_tests_regular_graphs():
     for feature_name in matching_python_functions.keys():
         print(feature_name)
-        benchmark_gpu_feature_regular_graph(feature_name, type='cpp')
+        #benchmark_gpu_feature_regular_graph(feature_name, type='cpp')
         benchmark_gpu_feature_regular_graph(feature_name, type='gpu')
 
 
@@ -124,7 +124,7 @@ def run_all_feature_tests_regular_graphs():
     for feature_name in matching_python_functions.keys():
         print(feature_name)
         benchmark_feature_regular_graph(feature_name, python=False)
-        benchmark_feature_regular_graph(feature_name, python=True)
+        # benchmark_feature_regular_graph(feature_name, python=True)
 
 
 def run_all_feature_tests_erdos_renyi():
@@ -135,5 +135,5 @@ def run_all_feature_tests_erdos_renyi():
 
 
 if __name__ == '__main__':
-    # run_all_feature_with_gpu_tests_regular_graphs()
-    run_all_feature_tests_regular_graphs()
+    run_all_feature_with_gpu_tests_regular_graphs()
+    #run_all_feature_tests_regular_graphs()
