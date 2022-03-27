@@ -93,6 +93,8 @@ private:
 	unsigned int* deviceFeatures;
 };
 
+
+
 __global__ void Motif3Kernel();
 __global__ void Motif4Kernel();
 

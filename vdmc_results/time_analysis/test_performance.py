@@ -7,6 +7,7 @@ import os
 import sys
 import itertools
 import pickle
+
 sys.path.append(".")
 sys.path.append("..")
 
@@ -73,7 +74,7 @@ def calculate_gpu_many(runs, level, size, avg_deg, directed):
 
 def run_all_calculations():
     from generate_graphs import SIZES, AVG_DEG, DIRECTED, NUM_RUNS
-    modes = ["cpp", "gpu"]
+    modes = ["gpu"]  # ["cpp", "gpu"]
     levels = [3, 4]
     for size, degree, is_directed, mode, level in itertools.product(SIZES, AVG_DEG, DIRECTED, modes, levels):
         if mode == "gpu":

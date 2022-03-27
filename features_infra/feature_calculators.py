@@ -6,7 +6,7 @@ from itertools import chain
 import networkx as nx
 import numpy as np
 
-# from scipy.stats import zscore
+from scipy.stats import zscore
 
 try:
     from graph_measures.loggers import EmptyLogger
@@ -24,7 +24,7 @@ def z_scoring(matrix):
         elif minimum[0, i] == 0:
             new_matrix[:, i] = np.log10(new_matrix[:, i] + 0.1)
         if new_matrix[:, i].std() > 0:
-            new_matrix[:, i] = (new_matrix[:, i] - new_matrix[:, i].min()) / new_matrix[:, i].std()
+            new_matrix[:, i] = (new_matrix[:, i] - new_matrix[:, i].mean()) / new_matrix[:, i].std()
     return new_matrix
 
 
@@ -113,6 +113,7 @@ class FeatureCalculator:
             mx = mx.transpose()
         if should_zscore:
             mx = z_scoring(mx)  # , axis=0)
+            # mx = zscore(mx)  # , axis=0)
         return mtype(mx)
 
     def __repr__(self):
@@ -161,12 +162,17 @@ class EdgeFeatureCalculator(FeatureCalculator):
     #     self._features = {str(edge): None for edge in self._gnx.edges()}
 
     def _params_order(self, input_order: list = None):
-        if input_order is None:
-            return sorted(self._gnx.edges())
-        return input_order
+        # if input_order is None:
+        #     return sorted(self._gnx.edges())
+        # return input_order
+
+        return sorted(self._gnx.edges())
 
     def _get_feature(self, element) -> np.ndarray:
-        return np.array(self.features[element])
+        try:
+            return np.array(self.features[element])
+        except:
+            return np.array(self.features[(element[1], element[0])])
 
 
 FeatureMeta = namedtuple("FeatureMeta", ("calculator", "abbr_set"))

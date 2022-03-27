@@ -43,7 +43,7 @@ class GraphFeatures(dict):
             if gnx.is_directed():
                 subgraphs = nx.weakly_connected_component_subgraphs(gnx)
             else:
-                subgraphs = nx.connected_component_subgraphs(gnx)
+                subgraphs = [gnx.subgraph(c) for c in nx.connected_components(gnx)]
             self._gnx = max(subgraphs, key=len)
         else:
             self._gnx = gnx
@@ -187,7 +187,10 @@ class GraphFeatures(dict):
         if entries_order is None:
             entries_order = sorted(self._gnx)
 
-        sorted_features = map(at(1), sorted(self.items(), key=at(0)))
+        # This will sort the features according to A-Z:
+        # sorted_features = map(at(1), sorted(self.items(), key=at(0)))
+        # This will not sort the features:
+        sorted_features = [at[1] for at in self.items()]
         # Consider caching the matrix creation (if it takes long time)
         sorted_features = [feature for feature in sorted_features if feature.is_relevant() and feature.is_loaded]
 

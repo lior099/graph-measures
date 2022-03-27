@@ -31,10 +31,16 @@ class EdgeDegreeBasedCalculator(EdgeFeatureCalculator):
             e1_feature = self._general_c.feature(edge[0])
             e2_feature = self._general_c.feature(edge[1])
 
-            self._features[edge] = [
-                float(e1_feature[0]) - e2_feature[0],  # sub
-                (float(e1_feature[0]) + e2_feature[0]) / 2  # mean
-            ]
+            try:
+                self._features[edge] = [
+                    float(e1_feature[0]) - e2_feature[0],  # sub
+                    (float(e1_feature[0]) + e2_feature[0]) / 2  # mean
+                ]
+            except:
+                self._features[edge] = [
+                    e1_feature - e2_feature,  # sub
+                    (e1_feature + e2_feature) / 2  # mean
+                ]
 
 
 feature_entry = {

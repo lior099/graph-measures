@@ -17,13 +17,14 @@ NUM_RUNS = 5
 if __name__ == "__main__":
     for size, degree, is_directed in itertools.product(SIZES, AVG_DEG, DIRECTED):
         dirname = "size%s_deg%d_directed%r_runs" % (size, degree, is_directed)
+        print(dirname)
         if not os.path.exists(dirname):
             os.mkdir(dirname)
         p = min([1, float(degree) / (size - 1) * (0.5 if is_directed else 1)])
         for run in range(NUM_RUNS):
             os.mkdir(os.path.join(dirname, "run_%d" % run))
-            os.mkdir(os.path.join(dirname, "run_%d" % run, "motifs_python"))
-            os.mkdir(os.path.join(dirname, "run_%d" % run, "motifs_cpp"))
+            # os.mkdir(os.path.join(dirname, "run_%d" % run, "motifs_python"))
+            # os.mkdir(os.path.join(dirname, "run_%d" % run, "motifs_cpp"))
             os.mkdir(os.path.join(dirname, "run_%d" % run, "motifs_gpu"))
             g = nx.gnp_random_graph(n=size, p=p, directed=is_directed)
             pickle.dump(g, open(os.path.join(dirname, "run_%d" % run, "gnx.pkl"), "wb"))

@@ -103,3 +103,8 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# VSCode
+.vscode
+
+features_algorithms/motif_variations/*.pkl
